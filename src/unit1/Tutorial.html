@@ -50,6 +50,25 @@
                text-decoration: none; font-size: .9rem; line-height: 1.35; }
   aside li a::before { counter-increment: s; content: counter(s); font-weight: 700; color: var(--accent); min-width: 14px; }
   aside li a:hover, aside li a.active { background: var(--accent-soft); color: var(--text); }
+  aside .setup-link { display: block; padding: 6px 10px; margin-bottom: 4px; border-radius: 8px; color: var(--muted);
+                      text-decoration: none; font-size: .9rem; }
+  aside .setup-link:hover, aside .setup-link.active { background: var(--accent-soft); color: var(--text); }
+
+  /* Setup section */
+  .tool { border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; margin: 14px 0; }
+  .tool-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+  .tool-head .ic { font-size: 1.6rem; }
+  .tool-head h3 { margin: 0; flex: 1; min-width: 180px; }
+  .tool-head .why { width: 100%; font-size: .9rem; color: var(--muted); }
+  .dl { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600;
+        font-size: .9rem; padding: 8px 16px; border-radius: 9px; }
+  .dl:hover { filter: brightness(1.1); }
+  .dl.ghost { background: none; color: var(--accent); border: 1px solid var(--accent); }
+  .tool .steps { margin-top: 12px; }
+  .term { background: var(--code-bg); color: var(--code-text); border-radius: 10px; padding: 10px 14px;
+          font-family: ui-monospace, Consolas, monospace; font-size: .85rem; margin: 6px 0; overflow-x: auto; white-space: pre; }
+  .term .p { color: var(--cm); }
+
   @media (max-width: 860px) {
     aside { position: static; max-height: none; padding: 20px 0 0; }
     aside ol { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -156,6 +175,7 @@
   <aside>
     <a class="back" href="../general/Curriculum_Map.html">← Curriculum Map</a>
     <div class="label">Unit 1</div>
+    <a class="setup-link" href="#setup">⚙️ Get ready: setup</a>
     <ol>
       <li><a href="#cs">What is Computer Science?</a></li>
       <li><a href="#algo">Algorithms</a></li>
@@ -175,6 +195,72 @@
       <p>Get a first feel for computer science and algorithmic thinking, write and run your first programs, and meet the idea of an <b>object</b>.</p>
       <div class="pills"><span>⏱ ~10 hours</span><span>☕ Java</span><span>📄 Curriculum v2.63, Chapter 1</span></div>
     </div>
+
+    <!-- Setup -->
+    <section id="setup">
+      <h2><span class="n">⚙️</span>Get Ready: Set Up Your Computer</h2>
+      <p>You need <b>three things</b>. Install them in this order. Everything is free and takes about 15 minutes.</p>
+
+      <div class="tool">
+        <div class="tool-head">
+          <span class="ic">☕</span><h3>1. Java (JDK 25)</h3>
+          <a class="dl" href="https://adoptium.net/temurin/releases/?os=windows&amp;package=jdk&amp;version=25" target="_blank" rel="noopener">Download Temurin JDK 25 ↗</a>
+          <div class="why">Java itself: it runs Java programs and includes the compiler. Both IntelliJ and the Unit 1 app need it.</div>
+        </div>
+        <ol class="steps">
+          <li>On the download page choose <b>Windows</b>, <b>x64</b>, <b>JDK</b>, version <b>25 (LTS)</b>, and download the <b><code>.msi</code></b> file. (If the link doesn't open the right page, go to <a href="https://adoptium.net" target="_blank" rel="noopener">adoptium.net</a> and click the big download button.)</li>
+          <li>Run the installer and click <b>Next</b> until you reach the <b>Custom Setup</b> screen.</li>
+          <li>Click the ❌ next to <b>"Associate .jar"</b> and choose <b>"Will be installed on local hard drive"</b>. Make sure <b>"Add to PATH"</b> is also turned on.</li>
+          <li>Finish the installation.</li>
+        </ol>
+        <div class="callout warn"><b>Don't skip step 3</b>Without "Associate .jar", double-clicking the Unit 1 app won't open it.</div>
+        <p><b>Check it worked:</b> press <kbd>Win</kbd>, type <code>cmd</code>, press <kbd>Enter</kbd>, and type these two commands:</p>
+        <div class="term"><span class="p">C:\&gt;</span> java -version
+openjdk version "25..."
+<span class="p">C:\&gt;</span> javac -version
+javac 25...</div>
+        <p style="font-size:.9rem;color:var(--muted)">If both show version 25, you're good. If you see "not recognized", restart the computer and try again.</p>
+      </div>
+
+      <div class="tool">
+        <div class="tool-head">
+          <span class="ic">💡</span><h3>2. IntelliJ IDEA</h3>
+          <a class="dl" href="https://www.jetbrains.com/idea/download/?section=windows" target="_blank" rel="noopener">Download IntelliJ IDEA ↗</a>
+          <div class="why">The editor where you'll write, run and debug Java code for the rest of the course.</div>
+        </div>
+        <ol class="steps">
+          <li>Download the <b>Windows</b> installer (<code>.exe</code>). If the page offers a <b>Community Edition</b>, pick that one; it's free. Newer versions have a single download whose Java features are free.</li>
+          <li>Run the installer. On the options screen, tick <b>"Create Desktop Shortcut"</b> and <b>"Add 'Open Folder as Project'"</b>.</li>
+          <li>Open IntelliJ → <b>New Project</b> → <b>Java</b>. Give it a name (for example <code>java_course</code>).</li>
+          <li>In the <b>JDK</b> box, choose the <b>Temurin 25</b> you installed in step 1, then click <b>Create</b>.</li>
+          <li>Test it: right-click the <code>src</code> folder → <i>New</i> → <i>Java Class</i> → name it <code>Hello</code>, paste the program from <a href="#structure">section 5</a> and press ▶.</li>
+        </ol>
+        <div class="callout tip"><b>Students get the paid version free</b>If you want IntelliJ IDEA Ultimate, JetBrains gives it free to students: <a href="https://www.jetbrains.com/community/education/#students" target="_blank" rel="noopener">apply here</a>. You don't need it for this course.</div>
+      </div>
+
+      <div class="tool">
+        <div class="tool-head">
+          <span class="ic">🧩</span><h3>3. The Unit 1 app</h3>
+          <span class="dl ghost">Link from your teacher</span>
+          <div class="why">Tutorial, examples and homework in one window. You write and run your homework inside it.</div>
+        </div>
+        <ol class="steps">
+          <li>Download <code>Unit1.jar</code> from the link your teacher sends you.</li>
+          <li>Double-click it to open.</li>
+        </ol>
+        <div class="callout warn"><b>Opens as a zip, or nothing happens?</b>This happens when WinRAR or 7-Zip is installed. Right-click <code>Unit1.jar</code> → <b>Open with</b> → <b>OpenJDK Platform binary</b>. Or open <code>cmd</code> in the same folder and type:
+          <div class="term">java -jar Unit1.jar</div></div>
+      </div>
+
+      <h3>Setup checklist</h3>
+      <ul class="check" id="setupChecks">
+        <li><label><input type="checkbox"><span><code>java -version</code> shows version 25</span></label></li>
+        <li><label><input type="checkbox"><span><code>javac -version</code> shows version 25</span></label></li>
+        <li><label><input type="checkbox"><span>IntelliJ opens, and the <code>Hello</code> program runs</span></label></li>
+        <li><label><input type="checkbox"><span>The Unit 1 app opens with a double-click</span></label></li>
+      </ul>
+      <p style="font-size:.88rem;color:var(--muted)">🍎 <b>On a Mac?</b> Same steps: on the Temurin page choose <b>macOS</b> and the <code>.pkg</code> file; on the IntelliJ page choose <b>macOS</b> (Apple Silicon for M1/M2/M3/M4, Intel for older Macs). There's no "Associate .jar" option on a Mac; double-clicking works by default.</p>
+    </section>
 
     <!-- 1 -->
     <section id="cs">
@@ -470,6 +556,17 @@ small.display();      <span class="cm">// show small's state</span></code></pre>
   }
   boxes.forEach(b => b.addEventListener("change", updateBar));
   updateBar();
+
+  // ----- Setup checklist (saved in this browser only) -----
+  const setupBoxes = [...document.querySelectorAll("#setupChecks input")];
+  const SETUP_KEY = "unit1-setup";
+  try {
+    const saved = JSON.parse(localStorage.getItem(SETUP_KEY) || "[]");
+    setupBoxes.forEach((bx, i) => bx.checked = !!saved[i]);
+  } catch (e) {}
+  setupBoxes.forEach(b => b.addEventListener("change", () => {
+    try { localStorage.setItem(SETUP_KEY, JSON.stringify(setupBoxes.map(x => x.checked))); } catch (e) {}
+  }));
 
   // ----- Highlight current section in sidebar -----
   const links = [...document.querySelectorAll("aside a[href^='#']")];
