@@ -40,7 +40,6 @@ final class HomeworkPanel extends JPanel {
     private final Store store;
     private final Map<String, JTextComponent> written = new LinkedHashMap<>();
     private final Map<String, JTextComponent> code = new LinkedHashMap<>();
-    private final JTextField nameField = new JTextField(18);
 
     HomeworkPanel(Store store, Frame owner) {
         super(new BorderLayout());
@@ -78,20 +77,12 @@ final class HomeworkPanel extends JPanel {
         bar.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.BORDER), new EmptyBorder(10, 18, 10, 18)));
 
-        JPanel name = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
-        name.setOpaque(false);
-        name.add(Theme.label("Your name:", Theme.UI_BOLD, Theme.TEXT));
-        nameField.setText(store.get("student.name", ""));
-        nameField.setFont(Theme.UI);
-        nameField.setTransferHandler(null);
-        onChange(nameField, () -> store.put("student.name", nameField.getText()));
-        name.add(nameField);
-        name.add(Theme.label("   Your work is saved automatically.", Theme.UI_SMALL, Theme.MUTED));
+        JLabel saved = Theme.label("Your work is saved automatically.", Theme.UI_SMALL, Theme.MUTED);
 
         JButton export = Theme.button("Export for teacher...", true);
         export.addActionListener(e -> exportForTeacher(owner));
 
-        bar.add(name, BorderLayout.WEST);
+        bar.add(saved, BorderLayout.WEST);
         bar.add(export, BorderLayout.EAST);
         return bar;
     }
@@ -171,23 +162,16 @@ final class HomeworkPanel extends JPanel {
 
     /** Writes all answers into one text file the student can send to the teacher. */
     private void exportForTeacher(Frame owner) {
-        String name = nameField.getText().strip();
-        if (name.isEmpty()) {
-            JOptionPane.showMessageDialog(owner, "Please type your name first (at the top of the Homework tab).",
-                    "Name missing", JOptionPane.WARNING_MESSAGE);
-            nameField.requestFocusInWindow();
-            return;
-        }
+        LocalDateTime now = LocalDateTime.now();
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Save your homework");
         chooser.setSelectedFile(Path.of(System.getProperty("user.home"), "Desktop",
-                "Unit1_Homework_" + name.replaceAll("[^\\p{L}\\p{N}]+", "_") + ".txt").toFile());
+                "Unit1_Homework_" + now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".txt").toFile());
         if (chooser.showSaveDialog(owner) != JFileChooser.APPROVE_OPTION) return;
 
         StringBuilder sb = new StringBuilder();
         sb.append("UNIT 1 HOMEWORK\n");
-        sb.append("Student: ").append(name).append('\n');
-        sb.append("Exported: ").append(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).append("\n");
+        sb.append("Exported: ").append(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).append("\n");
         for (Exercise ex : EXERCISES) {
             sb.append("\n").append("=".repeat(60)).append("\nExercise ").append(ex.title()).append("\n").append("=".repeat(60)).append('\n');
             if (written.containsKey(ex.id())) {
