@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Curriculum Map</title>
+<style>
+  :root {
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --text: #1d2233;
+    --muted: #5d6478;
+    --border: #e2e5ee;
+    --a: #3b6ef5;         /* Part A accent */
+    --a-soft: #e8eefe;
+    --b: #0f9d7a;         /* Part B accent */
+    --b-soft: #e1f5ee;
+    --done: #16a34a;
+    --done-soft: #dcfce7;
+    --chip: #f0f2f7;
+    --shadow: 0 1px 2px rgba(20,30,60,.06), 0 4px 16px rgba(20,30,60,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12141b; --surface: #1b1e28; --text: #e7e9f0; --muted: #9aa1b5; --border: #2c3040;
+      --a: #7c9dff; --a-soft: #232c4a; --b: #3fd0a8; --b-soft: #183a32;
+      --done: #4ade80; --done-soft: #173a25; --chip: #252935;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12141b; --surface: #1b1e28; --text: #e7e9f0; --muted: #9aa1b5; --border: #2c3040;
+    --a: #7c9dff; --a-soft: #232c4a; --b: #3fd0a8; --b-soft: #183a32;
+    --done: #4ade80; --done-soft: #173a25; --chip: #252935;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 32px 16px 64px; }
+
+  header h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); margin: 0 0 6px; letter-spacing: -.02em; }
+  header p { margin: 0; color: var(--muted); }
+
+  /* Journey strip */
+  .journey { display: flex; flex-wrap: wrap; gap: 6px; margin: 28px 0 8px; }
+  .step {
+    flex: 1 1 60px; min-width: 60px; text-decoration: none; color: inherit;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 8px 6px; text-align: center; font-size: .78rem; line-height: 1.25;
+  }
+  .step b { display: block; font-size: 1.05rem; }
+  .step.a b { color: var(--a); }
+  .step.b b { color: var(--b); }
+  .step.done { border-color: var(--done); background: var(--done-soft); }
+  .step:hover { border-color: var(--muted); }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: .85rem; color: var(--muted); margin-bottom: 36px; }
+  .legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+  .legend .la::before { background: var(--a); }
+  .legend .lb::before { background: var(--b); }
+  .legend .ld::before { background: var(--done); }
+
+  /* Parts */
+  .part { margin-top: 40px; }
+  .part-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 14px; margin-bottom: 14px; }
+  .part-head h2 { margin: 0; font-size: 1.35rem; }
+  .part-head .meta { color: var(--muted); font-size: .9rem; }
+  .part-head .tag { font-size: .75rem; font-weight: 600; padding: 3px 10px; border-radius: 99px; }
+  .part.a .tag { background: var(--a-soft); color: var(--a); }
+  .part.b .tag { background: var(--b-soft); color: var(--b); }
+  .note { color: var(--muted); font-size: .92rem; margin: 0 0 16px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  @media (max-width: 400px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    box-shadow: var(--shadow); padding: 18px 18px 16px; border-top: 4px solid var(--accent);
+    display: flex; flex-direction: column; gap: 12px; scroll-margin-top: 16px;
+  }
+  .part.a .card { --accent: var(--a); --accent-soft: var(--a-soft); }
+  .part.b .card { --accent: var(--b); --accent-soft: var(--b-soft); }
+  .card-top { display: flex; align-items: center; gap: 12px; }
+  .num {
+    flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+    background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 1.1rem;
+  }
+  .card h3 { margin: 0; font-size: 1.08rem; line-height: 1.3; }
+  .card .hours { font-size: .8rem; color: var(--muted); }
+  .badge { margin-left: auto; font-size: .72rem; font-weight: 600; padding: 3px 9px; border-radius: 99px;
+           background: var(--done-soft); color: var(--done); white-space: nowrap; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+  .chips span { background: var(--chip); border-radius: 6px; padding: 2px 8px; font-size: .78rem; color: var(--muted); }
+  code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: .92em; }
+
+  .row { display: grid; grid-template-columns: 22px 1fr; gap: 6px; font-size: .92rem; }
+  .row .ic { font-size: 1rem; line-height: 1.4; }
+  .row strong { color: var(--accent); font-weight: 600; }
+
+  .open { align-self: flex-start; margin-top: 2px; text-decoration: none; font-weight: 600; font-size: .88rem;
+          color: var(--accent); }
+  .open:hover { text-decoration: underline; }
+
+  .electives { margin-top: 44px; background: var(--surface); border: 1px dashed var(--border);
+               border-radius: 14px; padding: 18px 20px; color: var(--muted); font-size: .92rem; }
+  .electives h2 { font-size: 1.05rem; margin: 0 0 8px; color: var(--text); }
+  .electives p { margin: 4px 0; }
+
+  footer { margin-top: 36px; font-size: .8rem; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Computer Science in Java: Curriculum Map</h1>
+    <p>Israeli Ministry of Education CS curriculum, v2.63 · 13 units · from your first <code>println</code> to binary trees</p>
+  </header>
+
+  <nav class="journey" aria-label="All units">
+    <a class="step a done" href="#u1"><b>1</b>Intro</a>
+    <a class="step a" href="#u2"><b>2</b>Basics</a>
+    <a class="step a" href="#u3"><b>3</b>if</a>
+    <a class="step a" href="#u4"><b>4</b>Loops</a>
+    <a class="step a" href="#u5"><b>5</b>Arrays</a>
+    <a class="step a" href="#u6"><b>6</b>OOP</a>
+    <a class="step b" href="#u7"><b>7</b>Recursion</a>
+    <a class="step b" href="#u8"><b>8</b>Efficiency</a>
+    <a class="step b" href="#u9"><b>9</b>Stack</a>
+    <a class="step b" href="#u10"><b>10</b>Queue</a>
+    <a class="step b" href="#u11"><b>11</b>List</a>
+    <a class="step b" href="#u12"><b>12</b>Implement</a>
+    <a class="step b" href="#u13"><b>13</b>Trees</a>
+  </nav>
+  <div class="legend"><span class="la">Part A: Foundations</span><span class="lb">Part B: Data Structures</span><span class="ld">Ready</span></div>
+
+  <!-- ===================== PART A ===================== -->
+  <section class="part a">
+    <div class="part-head">
+      <h2>Part A: Foundations</h2><span class="tag">Bagrut units 1+2</span><span class="meta">180 hours</span>
+    </div>
+    <p class="note">Units 1–5 use ready-made classes as "black boxes". Unit 6 opens the box and you write your own classes.</p>
+
+    <div class="grid">
+      <article class="card" id="u1">
+        <div class="card-top"><div class="num">1</div><div><h3>Introduction</h3><div class="hours">10 h</div></div><span class="badge">✓ Ready</span></div>
+        <div class="chips"><span>What is CS</span><span>Algorithms</span><span>Programming languages</span><span>class + main</span><span>Printing</span><span>Objects &amp; <code>new</code></span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> algorithmic thinking, and an understanding of how a program is built and run.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> write and run programs that print output, and control ready-made objects like <code>Bucket</code> to solve puzzles.</div></div>
+        <a class="open" href="../unit1/Tutorial.html">Open the Unit 1 tutorial →</a>
+      </article>
+
+      <article class="card" id="u2">
+        <div class="card-top"><div class="num">2</div><div><h3>Basic Programming Concepts</h3><div class="hours">30 h</div></div></div>
+        <div class="chips"><span>Variables</span><span><code>int</code> / <code>double</code></span><span>Arithmetic</span><span><code>Math</code></span><span>Type conversion</span><span>Input / output</span><span>Helper methods</span><span>Errors</span><span>Trace tables</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> the ability to store data, calculate with it, and split code into small methods.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> write calculators and converters (averages, area, change for a purchase, temperatures) that read input from the user.</div></div>
+      </article>
+
+      <article class="card" id="u3">
+        <div class="card-top"><div class="num">3</div><div><h3>Conditional Execution</h3><div class="hours">10 h</div></div></div>
+        <div class="chips"><span><code>boolean</code></span><span>Comparisons</span><span><code>! &amp;&amp; ||</code></span><span>Truth tables</span><span><code>if</code> / <code>else</code></span><span>Nested if</span><span>Input validation</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> programs that make decisions.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> react to input: grading, ticket prices by age, tax brackets, rejecting invalid input.</div></div>
+      </article>
+
+      <article class="card" id="u4">
+        <div class="card-top"><div class="num">4</div><div><h3>Loops</h3><div class="hours">40 h</div></div></div>
+        <div class="chips"><span><code>for</code></span><span><code>while</code></span><span>Counters &amp; sums</span><span>Min / max</span><span>Stopping conditions</span><span>Nested loops</span><span>Counting iterations</span><span>Documentation</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> the power to repeat work, and a first look at whether code is correct and fast.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> process any amount of input, find the largest or smallest value, draw patterns, and build simple games like guess-the-number.</div></div>
+      </article>
+
+      <article class="card" id="u5">
+        <div class="card-top"><div class="num">5</div><div><h3>Arrays</h3><div class="hours">46 h</div></div></div>
+        <div class="chips"><span>1D arrays</span><span>Arrays of objects</span><span>2D arrays</span><span>Linear search</span><span>Binary search</span><span>Insertion sort</span><span>Merging</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> the ability to store and work with collections of data, plus the classic search and sort algorithms.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> manage lists of grades or scores, search and sort data, and work with grids (game boards, tables, matrices).</div></div>
+      </article>
+
+      <article class="card" id="u6">
+        <div class="card-top"><div class="num">6</div><div><h3>Object-Oriented Programming</h3><div class="hours">44 h</div></div></div>
+        <div class="chips"><span>Writing classes</span><span>Attributes</span><span>Constructors</span><span>Encapsulation</span><span>Valid state</span><span>Pre/postconditions</span><span>Test programs</span><span>Inheritance (intro)</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> the move from <em>using</em> classes to <em>designing and writing</em> them, which is how real software is built.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> model real-world things (Student, BankAccount, Point…) and write the black boxes that other programmers use.</div></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ===================== PART B ===================== -->
+  <section class="part b">
+    <div class="part-head">
+      <h2>Part B: Data Structures</h2><span class="tag">Bagrut unit 4</span><span class="meta">90 hours</span>
+    </div>
+    <p class="note">Two general chapters (recursion and efficiency) come first, then the classic data structures: first using them, then building them.</p>
+
+    <div class="grid">
+      <article class="card" id="u7">
+        <div class="card-top"><div class="num">7</div><div><h3>Recursion</h3><div class="hours">14 h</div></div></div>
+        <div class="chips"><span>Stopping condition</span><span>Tracing f(n) → f(n-1)</span><span>Tail / double / mutual</span><span>Recursion on arrays</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> a new way to solve a problem by breaking it into smaller copies of itself.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> solve factorial, Fibonacci, digit sums, and recursive binary search, and you'll be ready for trees.</div></div>
+      </article>
+
+      <article class="card" id="u8">
+        <div class="card-top"><div class="num">8</div><div><h3>Introduction to Efficiency</h3><div class="hours">8 h</div></div></div>
+        <div class="chips"><span>Input size</span><span>Best / worst / average</span><span>Big-O</span><span>Merge sort</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> the ability to judge <em>how good</em> a solution is, not just whether it works.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> compare algorithms, choose the faster one, and explain why binary search beats linear search.</div></div>
+      </article>
+
+      <article class="card" id="u9">
+        <div class="card-top"><div class="num">9</div><div><h3>Stack</h3><div class="hours">12 h</div></div></div>
+        <div class="chips"><span>Abstract data types</span><span>LIFO</span><span>push / pop / top</span><span>Generics <code>Stack&lt;T&gt;</code></span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> your first data structure, and the idea of using a structure without knowing how it's built.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> build undo features, check for balanced brackets, and reverse sequences.</div></div>
+      </article>
+
+      <article class="card" id="u10">
+        <div class="card-top"><div class="num">10</div><div><h3>Queue</h3><div class="hours">8 h</div></div></div>
+        <div class="chips"><span>FIFO</span><span><code>Queue&lt;T&gt;</code></span><span>insert / remove / head</span><span>Stack vs. queue</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> a second core structure, and the ability to pick the right one for the job.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> simulate waiting lines, printer jobs, and turn-based processing.</div></div>
+      </article>
+
+      <article class="card" id="u11">
+        <div class="card-top"><div class="num">11</div><div><h3>Linked List</h3><div class="hours">15 h</div></div></div>
+        <div class="chips"><span>References</span><span><code>Node&lt;T&gt;</code></span><span>Insert / delete / search</span><span>What <code>new</code> really does</span><span>Static vs. dynamic memory</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> an understanding of how objects link together in memory.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> build lists that grow and shrink freely, and explain when a list beats an array.</div></div>
+      </article>
+
+      <article class="card" id="u12">
+        <div class="card-top"><div class="num">12</div><div><h3>Implementing Data Structures</h3><div class="hours">15 h</div></div></div>
+        <div class="chips"><span>Stack with an array</span><span>Stack with a list</span><span>Queue with a list</span><span>Comparing efficiency</span><span>Array of lists</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> a view inside the black box: one abstraction can have many implementations.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> write your own <code>Stack</code> and <code>Queue</code> classes and pick the best implementation.</div></div>
+      </article>
+
+      <article class="card" id="u13">
+        <div class="card-top"><div class="num">13</div><div><h3>Binary Trees</h3><div class="hours">18 h</div></div></div>
+        <div class="chips"><span>Root / leaf / height</span><span><code>BinNode&lt;T&gt;</code></span><span>Pre / in / post-order</span><span>Breadth-first</span><span>Binary search tree</span></div>
+        <div class="row"><span class="ic">🎯</span><div><strong>You gain:</strong> hierarchical data structures, the peak of the course.</div></div>
+        <div class="row"><span class="ic">🛠️</span><div><strong>You can:</strong> represent expressions as trees, store sorted data for fast search, and solve tree problems recursively.</div></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="electives">
+    <h2>Not covered here (electives)</h2>
+    <p><b>Bagrut unit 3:</b> one elective field (databases, graphics, assembly, functional or logic programming, web, data science) plus a project.</p>
+    <p><b>Bagrut unit 5:</b> theory electives (computational models, OOP, computer systems &amp; assembly, algorithms).</p>
+  </section>
+
+  <footer>java_programming · Curriculum Map</footer>
+</div>
+</body>
+</html>
