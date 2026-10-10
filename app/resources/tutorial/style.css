@@ -1,0 +1,31 @@
+body { font-family: "Segoe UI", Dialog; font-size: 14pt; color: #1d2233; background-color: #ffffff; }
+h1 { font-size: 21pt; margin-top: 0; margin-bottom: 10px; color: #1d2233; }
+h2 { font-size: 15pt; margin-top: 18px; margin-bottom: 6px; color: #1d2233; }
+p { margin-top: 0; margin-bottom: 10px; }
+.muted { color: #5d6478; }
+.lead { color: #5d6478; font-size: 14pt; margin-bottom: 14px; }
+code { font-family: Consolas, Monospaced; color: #3b4fb8; background-color: #eef1fb; }
+pre { font-family: Consolas, Monospaced; font-size: 12pt; background-color: #1e2230; color: #e6e8f0;
+      padding: 12px; margin-top: 6px; margin-bottom: 12px; }
+.kw { color: #c792ea; }
+.str { color: #c3e88d; }
+.cm { color: #7f8aa8; }
+.ty { color: #82aaff; }
+.num { color: #f78c6c; }
+table.grid { margin-top: 4px; margin-bottom: 12px; }
+table.grid th { background-color: #e8eefe; text-align: left; font-weight: bold; }
+table.grid td { background-color: #ffffff; }
+table.cards { margin-bottom: 10px; }
+td.card { background-color: #f6f7fb; padding: 10px 12px; vertical-align: top; }
+.card-title { font-weight: bold; color: #1d2233; }
+.card-text { color: #5d6478; font-size: 12.5pt; }
+.tip { background-color: #e1f5ee; padding: 10px 14px; margin-top: 6px; margin-bottom: 12px;
+       border-left-width: 4px; border-left-style: solid; border-left-color: #0f9d7a; }
+.warn { background-color: #fff1e6; padding: 10px 14px; margin-top: 6px; margin-bottom: 12px;
+        border-left-width: 4px; border-left-style: solid; border-left-color: #c2410c; }
+.flow { color: #1d2233; background-color: #f6f7fb; padding: 10px 12px; margin-bottom: 12px; }
+.arrow { color: #3b6ef5; font-weight: bold; }
+ol { margin-top: 4px; margin-bottom: 12px; }
+ul { margin-top: 4px; margin-bottom: 12px; }
+li { margin-bottom: 4px; }
+.kbd { font-family: Consolas, Monospaced; background-color: #eef1fb; color: #1d2233; }

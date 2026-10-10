@@ -1,0 +1,6 @@
+Bucket b = new Bucket(4);    // create an empty 4-liter bucket
+b.display();                 // [....] 0/4 liters
+b.fill();
+b.display();                 // [####] 4/4 liters
+b.empty();
+b.display();                 // [....] 0/4 liters

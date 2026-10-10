@@ -1,0 +1,10 @@
+// Task: using a 5-liter and a 3-liter bucket, end up with exactly 2 liters.
+// Algorithm in words:
+//   1. Fill the 5-liter bucket.
+//   2. Pour from the 5-liter bucket into the 3-liter bucket.
+//   3. Now 2 liters are left in the 5-liter bucket. Done!
+Bucket five = new Bucket(5);
+Bucket three = new Bucket(3);
+five.fill();             // step 1
+five.pourInto(three);    // step 2
+five.display();          // step 3: check the result

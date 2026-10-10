@@ -1,0 +1,5 @@
+System.out.println("println moves to a new line after printing.");
+System.out.print("print stays ");
+System.out.print("on the ");
+System.out.print("same line.");
+System.out.println();   // an empty println just ends the line

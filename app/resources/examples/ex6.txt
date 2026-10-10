@@ -1,0 +1,5 @@
+Bucket red = new Bucket(2);
+Bucket blue = new Bucket(6);
+red.fill();                  // only red changes
+red.display();
+blue.display();

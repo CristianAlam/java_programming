@@ -1,0 +1,10 @@
+// Bucket x = new Bucket(4);
+// Bucket y = new Bucket(6);
+// y.fill();
+// y.pourInto(x);
+// x.display();
+// y.display();
+// x.empty();
+// y.pourInto(x);
+// x.display();
+// y.display();

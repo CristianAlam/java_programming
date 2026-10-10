@@ -1,0 +1,9 @@
+Bucket big = new Bucket(5);
+Bucket small = new Bucket(3);
+big.fill();
+big.pourInto(small);
+
+System.out.print("Liters left in big: ");
+System.out.println(big.getCurrentAmount());
+System.out.print("Capacity of small: ");
+System.out.println(small.getCapacity());

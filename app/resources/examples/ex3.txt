@@ -1,0 +1,6 @@
+System.out.println("    /\\");      // "\\" prints a single backslash
+System.out.println("   /  \\");
+System.out.println("  /____\\");
+System.out.println("  |    |");
+System.out.println("  | [] |");
+System.out.println("  |____|");

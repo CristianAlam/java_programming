@@ -1,0 +1,43 @@
+<h1>5. The Basic Structure: Class + main</h1>
+<p>Every Java program in this course lives inside a <b>class</b> and starts running from the <b><code>main</code></b> method.</p>
+<pre><span class="kw">public class</span> <span class="ty">Hello</span> {                              <span class="cm">// the class: a "container" for the program</span>
+    <span class="kw">public static void</span> main(<span class="ty">String</span>[] args) {      <span class="cm">// main: where the program starts</span>
+        <span class="ty">System</span>.out.println(<span class="str">"Hello, world!"</span>);      <span class="cm">// a command (statement)</span>
+    }
+}</pre>
+<div class="tip"><b>For now</b><br>Treat <code>public class ...</code> and <code>public static void main(...)</code> as a fixed <b>frame</b> you write every time. In this app the frame is already written for you; you type only what goes inside <code>main</code>.</div>
+
+<h2>Rules to remember</h2>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><td width="28%"><b>Name = file</b></td><td><code>Hello</code> goes in <code>Hello.java</code></td></tr>
+  <tr><td><b>Top to bottom</b></td><td>Commands run one after another</td></tr>
+  <tr><td><b>Semicolons</b></td><td>Every command ends with <code>;</code></td></tr>
+  <tr><td><b>Braces in pairs</b></td><td>Every <code>{</code> needs a matching <code>}</code></td></tr>
+  <tr><td><b>Case-sensitive</b></td><td><code>System</code> is not the same as <code>system</code></td></tr>
+</table>
+
+<h2>Printing</h2>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="42%">Command</th><th>What it does</th></tr>
+  <tr><td><code>System.out.println("text");</code></td><td>Prints the text, then moves to a new line</td></tr>
+  <tr><td><code>System.out.print("text");</code></td><td>Prints the text and stays on the same line</td></tr>
+  <tr><td><code>System.out.println();</code></td><td>Prints an empty line</td></tr>
+</table>
+
+<h2>Special characters inside text</h2>
+<p>Some characters can't be typed directly inside <code>"..."</code>. Write them with a backslash <code>\</code> instead:</p>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="14%">Write</th><th width="34%">Prints</th><th>Example</th></tr>
+  <tr><td><code>\n</code></td><td>A new line</td><td><code>"Line one\nLine two"</code></td></tr>
+  <tr><td><code>\t</code></td><td>A tab (a wide space)</td><td><code>"Name:\tDana"</code></td></tr>
+  <tr><td><code>\"</code></td><td>A quote mark <code>"</code></td><td><code>"She said \"Hi\""</code></td></tr>
+  <tr><td><code>\\</code></td><td>A backslash <code>\</code></td><td><code>"  /\\"</code> prints <code>  /\</code></td></tr>
+</table>
+<div class="warn"><b>Watch out</b><br>A single <code>\</code> on its own is an error. To print one backslash, always write two: <code>\\</code>.</div>
+
+<h2>Comments</h2>
+<p>A <b>comment</b> is a note for humans. Java ignores it completely when running the program.</p>
+<pre><span class="cm">// This whole line is a comment</span>
+<span class="ty">System</span>.out.println(<span class="str">"Hi"</span>);   <span class="cm">// a comment can also come after a command</span>
+<span class="cm">// System.out.println("Bye");   this command is "commented out", so it won't run</span></pre>
+<div class="tip"><b>Shortcut</b><br>Select one or more lines and press <span class="kbd">Ctrl + /</span> to comment them out. Press it again to uncomment them (remove the <code>//</code>). This works in IntelliJ and in this app.</div>

@@ -1,0 +1,6 @@
+Bucket big = new Bucket(5);
+Bucket small = new Bucket(3);
+big.fill();
+big.pourInto(small);         // only 3 liters fit, so 2 stay in big
+big.display();               // [##...] 2/5 liters
+small.display();             // [###] 3/3 liters

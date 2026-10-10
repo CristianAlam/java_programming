@@ -1,0 +1,3 @@
+Main-Class: app.Main
+Enable-Native-Access: ALL-UNNAMED
+

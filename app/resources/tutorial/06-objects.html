@@ -1,0 +1,34 @@
+<h1>6. Objects</h1>
+<p>An <b>object</b> is a "thing" in the program that has a state and can perform actions. A <b>class</b> is the blueprint (the "cookie cutter") that objects are made from.</p>
+
+<table class="cards" cellspacing="8" width="100%">
+<tr>
+  <td class="card" width="50%"><div class="card-title">Class <code>Bucket</code></div><div class="card-text">The blueprint for all buckets</div></td>
+  <td class="card" width="50%"><div class="card-title">Objects <code>small</code>, <code>big</code></div><div class="card-text">Real buckets made from that blueprint, each with its own water</div></td>
+</tr>
+</table>
+<div class="tip"><b>Using vs. implementing</b><br>You don't need to know how a class works inside in order to use it. You only need its <b>interface</b>: the list of actions you may perform.</div>
+
+<h2>Creating an object: new</h2>
+<pre><span class="ty">Bucket</span> small = <span class="kw">new</span> <span class="ty">Bucket</span>(<span class="num">3</span>);   <span class="cm">// a new, empty 3-liter bucket named "small"</span>
+<span class="ty">Bucket</span> big   = <span class="kw">new</span> <span class="ty">Bucket</span>(<span class="num">5</span>);   <span class="cm">// a second, separate 5-liter bucket</span></pre>
+
+<h2>Calling a method: the dot</h2>
+<pre>big.fill();           <span class="cm">// "big, fill yourself!"</span>
+big.pourInto(small);  <span class="cm">// pour from big into small, as much as fits</span>
+small.display();      <span class="cm">// show small's state</span></pre>
+<p>Pattern: <code>objectName.methodName(arguments);</code></p>
+
+<h2>The Bucket interface (keep this in front of you!)</h2>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="34%">Action</th><th>What it does</th></tr>
+  <tr><td><code>new Bucket(capacity)</code></td><td>Creates a new <b>empty</b> bucket that holds <code>capacity</code> liters</td></tr>
+  <tr><td><code>fill()</code></td><td>Fills the bucket to the top</td></tr>
+  <tr><td><code>empty()</code></td><td>Empties the bucket completely</td></tr>
+  <tr><td><code>pourInto(otherBucket)</code></td><td>Pours into <code>otherBucket</code> until this one is empty <b>or</b> the other is full</td></tr>
+  <tr><td><code>getCapacity()</code></td><td>Returns how many liters the bucket can hold</td></tr>
+  <tr><td><code>getCurrentAmount()</code></td><td>Returns how many liters are in the bucket now</td></tr>
+  <tr><td><code>display()</code></td><td>Prints the bucket, e.g. <code>[###..] 3/5 liters</code></td></tr>
+</table>
+<p>You can print a returned value directly: <code>System.out.println(big.getCurrentAmount());</code></p>
+<div class="tip"><b>Try it</b><br>Open <b>Try it: Bucket simulator</b> in the list on the left to play with two buckets.</div>

@@ -31,3 +31,7 @@ bin/
 ### IntelliJ per-user state ###
 .idea/workspace.xml
 .idea/shelf/
+
+### Unit 1 app build output ###
+app/build/
+app/Unit1.jar
