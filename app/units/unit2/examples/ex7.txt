@@ -1,0 +1,16 @@
+System.out.println("abs(-7)    = " + Math.abs(-7));
+System.out.println("max(3, 9)  = " + Math.max(3, 9));
+System.out.println("min(3, 9)  = " + Math.min(3, 9));
+System.out.println("pow(2, 10) = " + Math.pow(2, 10));
+System.out.println("sqrt(25)   = " + Math.sqrt(25));
+System.out.println("round(2.5) = " + Math.round(2.5));
+System.out.println("PI         = " + Math.PI);
+
+double hyp = Math.sqrt(Math.pow(3, 2) + Math.pow(4, 2));
+System.out.println("hypotenuse of 3 and 4 = " + hyp);
+int largest = Math.max(4, Math.max(11, 7));    // a call inside a call
+System.out.println("largest of 4, 11, 7 = " + largest);
+double twoPlaces = Math.round(Math.PI * 100) / 100.0;
+System.out.println("PI to 2 places = " + twoPlaces);
+int grade = (int) Math.round(84.6);            // round returns a long, so cast to int
+System.out.println("84.6 rounded = " + grade);

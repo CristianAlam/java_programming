@@ -20,22 +20,7 @@ import java.util.Map;
  * a code editor, or both. Everything is saved automatically.
  */
 final class HomeworkPanel extends JPanel {
-    private record Exercise(String id, String title) {
-        @Override
-        public String toString() { return title; }
-    }
-
-    private static final Exercise[] EXERCISES = {
-            new Exercise("ex1", "1. Name card"),
-            new Exercise("ex2", "2. Big initials"),
-            new Exercise("ex3", "3. print vs println"),
-            new Exercise("ex4", "4. Read a program"),
-            new Exercise("ex5", "5. Find the bugs"),
-            new Exercise("ex6", "6. Algorithm in plain words"),
-            new Exercise("ex7", "7. Bucket tracing"),
-            new Exercise("ex8", "8. The water puzzle"),
-            new Exercise("ex9", "9. Challenge: harder puzzle"),
-    };
+    private static final Unit.Exercise[] EXERCISES = Unit.CURRENT.homework.toArray(new Unit.Exercise[0]);
 
     private final Store store;
     private final Map<String, JTextComponent> written = new LinkedHashMap<>();
@@ -49,9 +34,9 @@ final class HomeworkPanel extends JPanel {
         CardLayout cards = new CardLayout();
         JPanel content = new JPanel(cards);
         content.setOpaque(false);
-        for (Exercise ex : EXERCISES) content.add(page(ex), ex.id());
+        for (Unit.Exercise ex : EXERCISES) content.add(page(ex), ex.id());
 
-        JList<Exercise> nav = Theme.navList(EXERCISES);
+        JList<Unit.Exercise> nav = Theme.navList(EXERCISES);
         nav.addListSelectionListener(e -> {
             if (nav.getSelectedValue() != null) cards.show(content, nav.getSelectedValue().id());
         });
@@ -87,7 +72,7 @@ final class HomeworkPanel extends JPanel {
         return bar;
     }
 
-    private JComponent page(Exercise ex) {
+    private JComponent page(Unit.Exercise ex) {
         String base = "homework/" + ex.id();
         String starterCode = Theme.resource(base + ".code");
         String starterWritten = Theme.resource(base + ".written");
@@ -118,10 +103,13 @@ final class HomeworkPanel extends JPanel {
 
         JComponent codePanel = null;
         if (hasCode) {
-            RunPanel run = new RunPanel(store.get(ex.id() + ".code", starterCode), true,
+            RunPanel run = new RunPanel(store.get(ex.id() + ".code", starterCode), true, ex.mode(),
                     "Type your code here, then press Run.");
             CodeEditor editor = run.editor();
             onChange(editor, () -> store.put(ex.id() + ".code", editor.getText()));
+            JTextArea typed = run.input();
+            typed.setText(store.get(ex.id() + ".input", ""));
+            onChange(typed, () -> store.put(ex.id() + ".input", typed.getText()));
             code.put(ex.id(), editor);
             codePanel = run;
         }
@@ -166,19 +154,19 @@ final class HomeworkPanel extends JPanel {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Save your homework");
         chooser.setSelectedFile(Path.of(System.getProperty("user.home"), "Desktop",
-                "Unit1_Homework_" + now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".txt").toFile());
+                "Unit" + Unit.CURRENT.number + "_Homework_" + now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + ".txt").toFile());
         if (chooser.showSaveDialog(owner) != JFileChooser.APPROVE_OPTION) return;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("UNIT 1 HOMEWORK\n");
+        sb.append("UNIT ").append(Unit.CURRENT.number).append(" HOMEWORK\n");
         sb.append("Exported: ").append(now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))).append("\n");
-        for (Exercise ex : EXERCISES) {
+        for (Unit.Exercise ex : EXERCISES) {
             sb.append("\n").append("=".repeat(60)).append("\nExercise ").append(ex.title()).append("\n").append("=".repeat(60)).append('\n');
             if (written.containsKey(ex.id())) {
                 sb.append("\n--- Written answer ---\n").append(written.get(ex.id()).getText().strip()).append('\n');
             }
             if (code.containsKey(ex.id())) {
-                sb.append("\n--- Code (inside main) ---\n").append(code.get(ex.id()).getText().strip()).append('\n');
+                sb.append(ex.mode() == Unit.Mode.CLASS ? "\n--- Code (whole class) ---\n" : "\n--- Code (inside main) ---\n").append(code.get(ex.id()).getText().strip()).append('\n');
             }
         }
         try {

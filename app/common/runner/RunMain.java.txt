@@ -1,0 +1,62 @@
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+/**
+ * Starts the student's Main. Input comes from the INPUT box, not a keyboard, so each line
+ * is printed when the program reads it. That way the output looks like a real session:
+ *   How old are you? 16
+ */
+public class RunMain {
+    public static void main(String[] args) {
+        System.setIn(new EchoInput(System.in));
+        try {
+            Main.main(args);
+        } finally {
+            System.out.flush();
+        }
+    }
+
+    /** Gives the program one line at a time, and echoes each line when it is handed over. */
+    static final class EchoInput extends InputStream {
+        private final InputStream in;
+        private byte[] line = new byte[0];
+        private int pos;
+
+        EchoInput(InputStream in) {
+            this.in = in;
+        }
+
+        private boolean fill() throws IOException {
+            if (pos < line.length) return true;
+            ByteArrayOutputStream b = new ByteArrayOutputStream();
+            int c;
+            while ((c = in.read()) != -1) {
+                b.write(c);
+                if (c == '\n') break;
+            }
+            if (b.size() == 0) return false;
+            line = b.toByteArray();
+            pos = 0;
+            System.out.write(line, 0, line.length);
+            if (line[line.length - 1] != '\n') System.out.write('\n');
+            System.out.flush();
+            return true;
+        }
+
+        @Override
+        public int read() throws IOException {
+            return fill() ? line[pos++] & 0xff : -1;
+        }
+
+        @Override
+        public int read(byte[] b, int off, int len) throws IOException {
+            if (len == 0) return 0;
+            if (!fill()) return -1;
+            int n = Math.min(len, line.length - pos);
+            System.arraycopy(line, pos, b, off, n);
+            pos += n;
+            return n;
+        }
+    }
+}

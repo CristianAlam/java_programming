@@ -1,0 +1,30 @@
+<h1>3. Arithmetic Expressions</h1>
+<p>An <b>expression</b> is anything that has a value: <code>7</code>, <code>x</code>, <code>x + 1</code>, <code>(a + b) / 2</code>. Java calculates (<i>evaluates</i>) it to get one value.</p>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="14%">Operator</th><th width="34%">Meaning</th><th width="22%">Example</th><th>Value</th></tr>
+  <tr><td><code>+</code></td><td>Addition</td><td><code>7 + 2</code></td><td><code>9</code></td></tr>
+  <tr><td><code>-</code></td><td>Subtraction</td><td><code>7 - 2</code></td><td><code>5</code></td></tr>
+  <tr><td><code>*</code></td><td>Multiplication</td><td><code>7 * 2</code></td><td><code>14</code></td></tr>
+  <tr><td><code>/</code></td><td>Division</td><td><code>7 / 2</code></td><td><code>3</code> (see below!)</td></tr>
+  <tr><td><code>%</code></td><td>Remainder (modulo)</td><td><code>7 % 2</code></td><td><code>1</code></td></tr>
+</table>
+
+<h2>Order of operations</h2>
+<p>Same as in math: first <b>parentheses</b>, then <code>*</code> <code>/</code> <code>%</code>, then <code>+</code> <code>-</code>. Operators at the same level go <b>left to right</b>.</p>
+<pre><span class="num">2</span> + <span class="num">3</span> * <span class="num">4</span>       <span class="cm">// 14   (3*4 first)</span>
+(<span class="num">2</span> + <span class="num">3</span>) * <span class="num">4</span>     <span class="cm">// 20</span>
+<span class="num">20</span> / <span class="num">4</span> * <span class="num">2</span>      <span class="cm">// 10   (left to right: 5 * 2)</span>
+<span class="num">10</span> - <span class="num">4</span> - <span class="num">3</span>      <span class="cm">// 3    (left to right: 6 - 3)</span></pre>
+<div class="warn"><b>Classic bug: the average</b><br><code>(a + b) / 2</code> is the average. <code>a + b / 2</code> is <code>a + (b / 2)</code>, which is wrong. When in doubt, add parentheses.</div>
+
+<h2>Integer division: quotient and remainder</h2>
+<p>When <b>both</b> sides are <code>int</code>, <code>/</code> gives a whole-number answer and throws away the rest. <code>%</code> gives what's left over. Think of sharing sweets:</p>
+<table class="cards" cellspacing="8" width="100%">
+<tr>
+  <td class="card" width="33%"><div class="card-title">17 sweets, 5 kids</div><div class="card-text"><code>17 / 5</code> = <b>3</b> each<br><code>17 % 5</code> = <b>2</b> left over</div></td>
+  <td class="card" width="33%"><div class="card-title">135 minutes</div><div class="card-text"><code>135 / 60</code> = <b>2</b> hours<br><code>135 % 60</code> = <b>15</b> minutes</div></td>
+  <td class="card" width="33%"><div class="card-title">The digits of 472</div><div class="card-text"><code>472 % 10</code> = <b>2</b> (units)<br><code>472 / 10 % 10</code> = <b>7</b> (tens)<br><code>472 / 100</code> = <b>4</b> (hundreds)</div></td>
+</tr>
+</table>
+<div class="tip"><b>Useful % patterns</b><br><code>n % 2</code> is 0 for even numbers and 1 for odd ones. <code>n % 10</code> is the last digit. <code>n / 10</code> removes the last digit.</div>
+<div class="tip"><b>Try it</b><br>Open <b>Try it: Quick quiz</b> in the list on the left and test yourself.</div>

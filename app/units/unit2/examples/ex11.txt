@@ -1,0 +1,11 @@
+public static void main(String[] args) {
+    int n = 3;
+    int sq = square(n);                        // the VALUE 3 is copied into the parameter
+    System.out.println("n = " + n + ", square = " + sq);   // n is still 3
+}
+
+// Changes its own copy of n only. The caller's variable is not affected.
+private static int square(int n) {
+    n = n * n;
+    return n;
+}

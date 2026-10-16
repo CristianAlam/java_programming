@@ -1,0 +1,11 @@
+Bucket big = new Bucket(7);
+Bucket small = new Bucket(3);
+big.fill();
+big.pourInto(small);
+
+int left = big.getCurrentAmount();                 // store the returned value
+double percent = 100.0 * left / big.getCapacity(); // calculate with it
+System.out.println("big has " + left + " liters, " + Math.round(percent) + "% full");
+
+int together = big.getCurrentAmount() + small.getCurrentAmount();
+System.out.println("total water: " + together);

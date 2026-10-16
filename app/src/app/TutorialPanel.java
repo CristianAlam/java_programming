@@ -8,22 +8,7 @@ import java.util.List;
 
 /** The Tutorial tab: a list of sections on the left, the selected section on the right. */
 final class TutorialPanel extends JPanel {
-    private record Section(String title, String page) {
-        @Override
-        public String toString() { return title; }
-    }
-
-    private static final Section[] SECTIONS = {
-            new Section("1. What is Computer Science?", "tutorial/01-cs.html"),
-            new Section("2. Algorithms", "tutorial/02-algorithms.html"),
-            new Section("3. Programming Languages", "tutorial/03-languages.html"),
-            new Section("4. What is a Program?", "tutorial/04-program.html"),
-            new Section("5. Class + main", "tutorial/05-structure.html"),
-            new Section("6. Objects", "tutorial/06-objects.html"),
-            new Section("    Try it: Bucket simulator", "#simulator"),
-            new Section("7. Working in IntelliJ", "tutorial/07-intellij.html"),
-            new Section("8. Checklist", "#checklist"),
-    };
+    private static final Unit.Section[] SECTIONS = Unit.CURRENT.tutorial.toArray(new Unit.Section[0]);
 
     TutorialPanel(Store store) {
         super(new BorderLayout());
@@ -32,19 +17,21 @@ final class TutorialPanel extends JPanel {
         CardLayout cards = new CardLayout();
         JPanel content = new JPanel(cards);
         List<Component> pages = new ArrayList<>();
-        for (Section s : SECTIONS) {
+        for (Unit.Section s : SECTIONS) {
             Component page = switch (s.page()) {
-                case "#simulator" -> new BucketSimulator();
-                case "#checklist" -> new ChecklistPanel(store);
+                case "#bucket" -> new BucketSimulator();
+                case "#tracer" -> new TraceSimulator();
+                case "#quiz" -> new QuizPanel(s.title().strip());
+                case "#checklist" -> new ChecklistPanel(store, s.title().strip());
                 default -> Theme.scroll(Theme.htmlView(Theme.resource(s.page())));
             };
             pages.add(page);
             content.add(page, s.title());
         }
 
-        JList<Section> nav = Theme.navList(SECTIONS);
+        JList<Unit.Section> nav = Theme.navList(SECTIONS);
         nav.addListSelectionListener(e -> {
-            Section s = nav.getSelectedValue();
+            Unit.Section s = nav.getSelectedValue();
             if (s == null) return;
             cards.show(content, s.title());
             Component page = pages.get(nav.getSelectedIndex());
@@ -73,7 +60,7 @@ final class TutorialPanel extends JPanel {
         JPanel left = new JPanel(new BorderLayout());
         left.setBackground(Theme.BG);
         left.setBorder(new EmptyBorder(14, 8, 14, 4));
-        JLabel heading = Theme.label("  UNIT 1 · INTRODUCTION", Theme.UI_SMALL.deriveFont(Font.BOLD), Theme.MUTED);
+        JLabel heading = Theme.label("  " + Unit.CURRENT.heading, Theme.UI_SMALL.deriveFont(Font.BOLD), Theme.MUTED);
         heading.setBorder(new EmptyBorder(4, 6, 10, 0));
         left.add(heading, BorderLayout.NORTH);
         left.add(nav, BorderLayout.CENTER);

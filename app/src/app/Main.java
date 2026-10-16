@@ -6,9 +6,9 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/** Unit 1 desktop app: Tutorial, Examples and Homework in one window. */
+/** Unit desktop app: Tutorial, Examples and Homework in one window. The unit comes from unit.properties. */
 public final class Main {
-    static final String TITLE = "Unit 1 - Introduction to Computer Science";
+    static final String TITLE = Unit.CURRENT.windowTitle();
 
     private Main() {}
 
@@ -36,7 +36,7 @@ public final class Main {
         tabs.addTab("   Homework   ", new HomeworkPanel(store, frame));
         tabs.setBackground(Theme.BG);
 
-        JLabel saved = Theme.label("Unit 1 · Computer Science in Java", Theme.UI_SMALL, Theme.MUTED);
+        JLabel saved = Theme.label("Unit " + Unit.CURRENT.number + " · Computer Science in Java", Theme.UI_SMALL, Theme.MUTED);
         JLabel guard = Theme.label(" ", Theme.UI_SMALL, Theme.MUTED);
         JPanel status = new JPanel(new BorderLayout());
         status.setBackground(Theme.SURFACE);

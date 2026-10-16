@@ -1,0 +1,29 @@
+<h1>5. The Math Library</h1>
+<p>Java comes with a class called <code>Math</code>: a <b>library</b> of ready-made math actions written by other programmers. You call them with the pattern <code>ClassName.methodName(values)</code>:</p>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="22%">Call</th><th width="34%">What it does</th><th width="24%">Example</th><th>Value</th></tr>
+  <tr><td><code>Math.abs(x)</code></td><td>Absolute value</td><td><code>Math.abs(-7)</code></td><td><code>7</code></td></tr>
+  <tr><td><code>Math.max(a, b)</code></td><td>The larger of two</td><td><code>Math.max(3, 9)</code></td><td><code>9</code></td></tr>
+  <tr><td><code>Math.min(a, b)</code></td><td>The smaller of two</td><td><code>Math.min(3, 9)</code></td><td><code>3</code></td></tr>
+  <tr><td><code>Math.pow(a, b)</code></td><td>a to the power of b</td><td><code>Math.pow(2, 10)</code></td><td><code>1024.0</code> (double)</td></tr>
+  <tr><td><code>Math.sqrt(x)</code></td><td>Square root</td><td><code>Math.sqrt(25)</code></td><td><code>5.0</code> (double)</td></tr>
+  <tr><td><code>Math.round(x)</code></td><td>Round to the nearest whole number</td><td><code>Math.round(2.5)</code></td><td><code>3</code></td></tr>
+  <tr><td><code>Math.random()</code></td><td>A random decimal from 0.0 up to (not including) 1.0</td><td><code>Math.random()</code></td><td>e.g. <code>0.7184...</code></td></tr>
+  <tr><td><code>Math.PI</code></td><td>The number pi (a value, not an action: no parentheses)</td><td><code>Math.PI</code></td><td><code>3.14159...</code></td></tr>
+</table>
+<pre><span class="kw">double</span> hyp = <span class="ty">Math</span>.sqrt(<span class="ty">Math</span>.pow(<span class="num">3</span>, <span class="num">2</span>) + <span class="ty">Math</span>.pow(<span class="num">4</span>, <span class="num">2</span>));     <span class="cm">// 5.0  (Pythagoras)</span>
+<span class="kw">int</span> biggest = <span class="ty">Math</span>.max(a, <span class="ty">Math</span>.max(b, c));                   <span class="cm">// largest of three: calls inside calls</span>
+<span class="kw">int</span> grade = (<span class="kw">int</span>) <span class="ty">Math</span>.round(<span class="num">84.6</span>);                          <span class="cm">// 85</span>
+<span class="kw">double</span> twoPlaces = <span class="ty">Math</span>.round(<span class="num">3.14159</span> * <span class="num">100</span>) / <span class="num">100.0</span>;        <span class="cm">// 3.14</span></pre>
+<div class="warn"><b>Math.round needs a cast to fit in an int</b><br>For a <code>double</code>, <code>Math.round</code> returns a very large whole-number type (<code>long</code>). Write <code>int r = (int) Math.round(x);</code></div>
+
+<h2>Random whole numbers</h2>
+<p><code>Math.random()</code> gives a decimal from 0 up to 1. To get a whole number from 1 to 6 (a die):</p>
+<pre><span class="kw">int</span> die = (<span class="kw">int</span>) (<span class="ty">Math</span>.random() * <span class="num">6</span>) + <span class="num">1</span>;</pre>
+<ol>
+  <li><code>Math.random()</code> gives something from 0 up to 1, e.g. 0.73</li>
+  <li><code>* 6</code> gives something from 0 up to 6, e.g. 4.38</li>
+  <li><code>(int)</code> cuts the decimals: <b>0, 1, 2, 3, 4 or 5</b>, e.g. 4</li>
+  <li><code>+ 1</code> gives <b>1 to 6</b>, e.g. 5</li>
+</ol>
+<div class="tip"><b>General formula</b><br>A random whole number from <code>low</code> to <code>high</code>: <code>(int) (Math.random() * (high - low + 1)) + low</code></div>

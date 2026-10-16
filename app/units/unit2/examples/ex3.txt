@@ -1,0 +1,7 @@
+System.out.println(2 + 3 * 4);       // 14: * before +
+System.out.println((2 + 3) * 4);     // 20: parentheses first
+System.out.println(20 / 4 * 2);      // 10: left to right
+
+int x = 10, y = 20;
+System.out.println("Wrong average: " + (x + y / 2));     // 20: y / 2 happens first
+System.out.println("Right average: " + ((x + y) / 2));   // 15

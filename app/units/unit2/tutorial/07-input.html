@@ -1,0 +1,33 @@
+<h1>7. Input: Reading from the Keyboard</h1>
+<p>To let the user type values, we use a ready-made class called <code>Scanner</code>. For now, treat it as a <b>black box</b>: copy the pattern, and use it.</p>
+<pre><span class="kw">import</span> java.util.<span class="ty">Scanner</span>;                    <span class="cm">// first line of the file: "I'll use Scanner"</span>
+
+<span class="kw">public</span> <span class="kw">class</span> <span class="ty">Greeting</span> {
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> main(<span class="ty">String</span>[] args) {
+        <span class="ty">Scanner</span> in = <span class="kw">new</span> <span class="ty">Scanner</span>(<span class="ty">System</span>.in);     <span class="cm">// create a Scanner object, once</span>
+
+        <span class="ty">System</span>.out.print(<span class="str">"How old are you? "</span>);   <span class="cm">// always tell the user what to type</span>
+        <span class="kw">int</span> age = in.nextInt();                  <span class="cm">// wait for a whole number</span>
+
+        <span class="ty">System</span>.out.print(<span class="str">"Your height in meters? "</span>);
+        <span class="kw">double</span> height = in.nextDouble();         <span class="cm">// wait for a decimal number</span>
+
+        <span class="ty">System</span>.out.println(<span class="str">"In 10 years you will be "</span> + (age + <span class="num">10</span>) + <span class="str">"."</span>);
+    }
+}</pre>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="30%">Call</th><th>Reads</th></tr>
+  <tr><td><code>in.nextInt()</code></td><td>A whole number, as an <code>int</code></td></tr>
+  <tr><td><code>in.nextDouble()</code></td><td>A decimal number, as a <code>double</code></td></tr>
+  <tr><td><code>in.next()</code></td><td>One word, as a <code>String</code></td></tr>
+</table>
+<div class="tip"><b>You already know this pattern!</b><br><code>new Scanner(...)</code> creates an <b>object</b>, just like <code>new Bucket(5)</code>. And <code>in.nextInt()</code> calls a method on it, just like <code>big.fill()</code>.</div>
+
+<h2>Input in this app</h2>
+<p>In this app you type the input <b>before</b> you press Run, in the <b>INPUT</b> box under the code, one value per line. When the program reads a value, it appears in the output, as if you had typed it:</p>
+<pre>How old are you? 16
+Your height in meters? 1.72
+In 10 years you will be 26.</pre>
+<div class="tip"><b>Already done for you</b><br>In this app, <code>import java.util.Scanner;</code> is part of the fixed frame. You only write the line that creates the Scanner: <code>Scanner in = new Scanner(System.in);</code></div>
+<div class="warn"><b>When input goes wrong</b><br>If the program expects a number but gets a word (like <code>abc</code>), it crashes with <code>InputMismatchException</code>. If it tries to read more values than you typed, it crashes with <code>NoSuchElementException</code>.</div>
+<div class="tip"><b>In IntelliJ</b><br>There you type the input while the program runs: click inside the <b>Run</b> window at the bottom, type the value, and press <span class="kbd">Enter</span>.</div>

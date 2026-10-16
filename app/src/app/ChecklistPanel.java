@@ -6,25 +6,18 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Tutorial section 8: what you can do by the end of the unit, with saved checkboxes. */
+/** The last tutorial section: what you can do by the end of the unit, with saved checkboxes. */
 final class ChecklistPanel extends JPanel {
-    private static final String[] GOALS = {
-            "Explain in your own words what a simple program does",
-            "Write an algorithm in plain words for a simple task",
-            "Turn that algorithm into a program and run it",
-            "Describe the structure of a program: class + main",
-            "Create objects with new and call their methods using a given interface",
-            "Run, debug and step through a program in IntelliJ",
-    };
+    private static final String[] GOALS = Unit.CURRENT.checklist.toArray(new String[0]);
 
-    ChecklistPanel(Store store) {
+    ChecklistPanel(Store store, String title) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Theme.SURFACE);
         setBorder(new EmptyBorder(22, 28, 22, 28));
 
-        add(left(Theme.label("8. Checklist", Theme.TITLE, Theme.TEXT)));
+        add(left(Theme.label(title, Theme.TITLE, Theme.TEXT)));
         add(Box.createVerticalStrut(6));
-        add(left(Theme.label("By the end of Unit 1 you can...", Theme.UI, Theme.MUTED)));
+        add(left(Theme.label("By the end of Unit " + Unit.CURRENT.number + " you can...", Theme.UI, Theme.MUTED)));
         add(Box.createVerticalStrut(14));
 
         JProgressBar bar = new JProgressBar(0, GOALS.length);
@@ -60,8 +53,7 @@ final class ChecklistPanel extends JPanel {
         add(Box.createVerticalStrut(24));
         add(left(Theme.label("What's next", Theme.UI_BOLD.deriveFont(16f), Theme.TEXT)));
         add(Box.createVerticalStrut(6));
-        add(left(Theme.label("Open the Examples tab, run each example, then solve the exercises in the Homework tab.",
-                Theme.UI, Theme.MUTED)));
+        add(left(Theme.label(Unit.CURRENT.checklistNext, Theme.UI, Theme.MUTED)));
         add(Box.createVerticalGlue());
     }
 

@@ -23,8 +23,9 @@ final class Store {
 
     static Store load() {
         String appData = System.getenv("APPDATA");
-        Path dir = appData != null ? Path.of(appData, "Unit1App") : Path.of(System.getProperty("user.home"), ".unit1app");
-        if (System.getProperty("unit1.datadir") != null) dir = Path.of(System.getProperty("unit1.datadir"));
+        String name = "Unit" + Unit.CURRENT.number + "App";
+        Path dir = appData != null ? Path.of(appData, name) : Path.of(System.getProperty("user.home"), "." + name.toLowerCase());
+        if (System.getProperty("unitapp.datadir") != null) dir = Path.of(System.getProperty("unitapp.datadir"));
         Store store = new Store(dir.resolve("homework.properties"));
         if (Files.exists(store.file)) {
             try (Reader r = Files.newBufferedReader(store.file, StandardCharsets.UTF_8)) {
@@ -53,7 +54,7 @@ final class Store {
         try {
             Files.createDirectories(file.getParent());
             try (Writer w = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
-                data.store(w, "Unit 1 homework - saved automatically");
+                data.store(w, "Unit " + Unit.CURRENT.number + " homework - saved automatically");
             }
         } catch (IOException ignored) {
         }

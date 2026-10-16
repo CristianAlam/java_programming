@@ -1,0 +1,8 @@
+// This example reads input. The values come from the INPUT box below: change them and run again.
+Scanner in = new Scanner(System.in);
+System.out.print("How old are you? ");
+int age = in.nextInt();
+System.out.print("Your height in meters (e.g. 1.65)? ");
+double height = in.nextDouble();
+System.out.println("In 10 years you will be " + (age + 10) + ".");
+System.out.println("Your height in cm: " + (height * 100));

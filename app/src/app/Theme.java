@@ -216,7 +216,8 @@ final class Theme {
         g.setColor(Color.WHITE);
         g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 40));
         FontMetrics fm = g.getFontMetrics();
-        g.drawString("1", (64 - fm.stringWidth("1")) / 2, 47);
+        String n = String.valueOf(Unit.CURRENT.number);
+        g.drawString(n, (64 - fm.stringWidth(n)) / 2, 47);
         g.dispose();
         return img;
     }

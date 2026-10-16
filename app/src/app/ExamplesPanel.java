@@ -6,22 +6,7 @@ import java.awt.*;
 
 /** The Examples tab: each example's code, ready to run. Students may change it and run again. */
 final class ExamplesPanel extends JPanel {
-    private record Example(String title, String file, String description) {
-        @Override
-        public String toString() { return title; }
-    }
-
-    private static final Example[] EXAMPLES = {
-            new Example("1. println vs print", "ex1", "println moves to a new line after printing; print stays on the same line."),
-            new Example("2. Order matters", "ex2", "Commands run from top to bottom, one after another."),
-            new Example("3. A text picture", "ex3", "Drawing with characters. Notice \\\\ prints a single backslash."),
-            new Example("4. Special characters", "ex4", "\\\" prints a quote, \\n starts a new line, \\t inserts a tab."),
-            new Example("5. First objects", "ex5", "Create a bucket with new, then call its methods with a dot."),
-            new Example("6. Two separate objects", "ex6", "Two objects of the same class each have their own state."),
-            new Example("7. Pouring between buckets", "ex7", "Objects can work together: big pours into small."),
-            new Example("8. Asking an object a question", "ex8", "Some methods return a value that you can print."),
-            new Example("9. From algorithm to program", "ex9", "Turning a plain-words algorithm into code, step by step."),
-    };
+    private static final Unit.Example[] EXAMPLES = Unit.CURRENT.examples.toArray(new Unit.Example[0]);
 
     ExamplesPanel() {
         super(new BorderLayout());
@@ -30,9 +15,9 @@ final class ExamplesPanel extends JPanel {
         CardLayout cards = new CardLayout();
         JPanel content = new JPanel(cards);
         content.setOpaque(false);
-        for (Example ex : EXAMPLES) content.add(page(ex), ex.title());
+        for (Unit.Example ex : EXAMPLES) content.add(page(ex), ex.title());
 
-        JList<Example> nav = Theme.navList(EXAMPLES);
+        JList<Unit.Example> nav = Theme.navList(EXAMPLES);
         nav.addListSelectionListener(e -> {
             if (nav.getSelectedValue() != null) cards.show(content, nav.getSelectedValue().title());
         });
@@ -51,7 +36,7 @@ final class ExamplesPanel extends JPanel {
         add(content, BorderLayout.CENTER);
     }
 
-    private static JComponent page(Example ex) {
+    private static JComponent page(Unit.Example ex) {
         JPanel p = new JPanel(new BorderLayout(0, 12));
         p.setBackground(Theme.SURFACE);
         p.setBorder(BorderFactory.createCompoundBorder(
@@ -65,8 +50,9 @@ final class ExamplesPanel extends JPanel {
         head.add(Box.createVerticalStrut(6));
         head.add(Theme.label(ex.description(), Theme.UI, Theme.MUTED));
 
-        RunPanel run = new RunPanel(Theme.resource("examples/" + ex.file() + ".txt"), true,
+        RunPanel run = new RunPanel(Theme.resource("examples/" + ex.file() + ".txt"), true, ex.mode(),
                 "Run it, compare the output with the code, then try changing something.");
+        run.input().setText(Theme.resource("examples/" + ex.file() + ".input"));   // sample input, if the example reads any
         p.add(head, BorderLayout.NORTH);
         p.add(run, BorderLayout.CENTER);
         return p;

@@ -1,0 +1,23 @@
+<h1>4. int vs double: Converting Types</h1>
+<p>The type of the <b>result</b> depends on the types of the values:</p>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="30%">Expression</th><th width="30%">Types</th><th>Result</th></tr>
+  <tr><td><code>7 / 2</code></td><td>int / int</td><td><code>3</code> (int)</td></tr>
+  <tr><td><code>7.0 / 2</code></td><td>double / int</td><td><code>3.5</code> (double)</td></tr>
+  <tr><td><code>7 / 2.0</code></td><td>int / double</td><td><code>3.5</code> (double)</td></tr>
+  <tr><td><code>3 + 1.5</code></td><td>int + double</td><td><code>4.5</code> (double)</td></tr>
+</table>
+<p><b>Rule:</b> if at least one side is a <code>double</code>, Java first converts the <code>int</code> to a <code>double</code> automatically, and the result is a <code>double</code>.</p>
+
+<h2>Automatic conversion: int to double is OK</h2>
+<pre><span class="kw">double</span> d = <span class="num">5</span>;      <span class="cm">// OK: 5 becomes 5.0. No information is lost.</span>
+<span class="kw">int</span> n = <span class="num">5.7</span>;       <span class="cm">// ERROR: "possible lossy conversion from double to int"</span></pre>
+<p>Java refuses to squeeze a <code>double</code> into an <code>int</code> by itself, because the decimal part would be lost. If you really want that, you must say so with a <b>cast</b>.</p>
+
+<h2>Casting: converting on purpose</h2>
+<pre><span class="kw">int</span> n = (<span class="kw">int</span>) <span class="num">5.7</span>;                        <span class="cm">// 5  (cuts off the decimals, does NOT round!)</span>
+<span class="kw">int</span> total = <span class="num">17</span>, count = <span class="num">4</span>;
+<span class="kw">double</span> wrong = total / count;             <span class="cm">// 4.0   int division happened first!</span>
+<span class="kw">double</span> right = (<span class="kw">double</span>) total / count;    <span class="cm">// 4.25  total becomes 17.0 first</span></pre>
+<div class="warn"><b>The most common bug of this unit</b><br><code>double avg = total / count;</code> looks right but gives a whole number, because <code>total / count</code> is calculated as <code>int / int</code> <i>before</i> it goes into the <code>double</code> box. Fix it with <code>(double) total / count</code> or <code>total / (double) count</code> or <code>1.0 * total / count</code>.</div>
+<p>Watch it happen in <b>Try it: Trace simulator</b> (program "int vs double").</p>

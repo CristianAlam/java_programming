@@ -14,7 +14,7 @@ import static java.lang.foreign.ValueLayout.JAVA_INT;
 /**
  * Asks Windows to hide a window from screenshots and screen recordings
  * (SetWindowDisplayAffinity). Does nothing on other operating systems.
- * Start the app with -Dunit1.noguard=true to switch it off (for the teacher).
+ * Start the app with -Dunitapp.noguard=true to switch it off (for the teacher).
  */
 final class ScreenGuard {
     private static final int WDA_MONITOR = 0x01;            // window shows as black in captures
@@ -24,7 +24,7 @@ final class ScreenGuard {
 
     static boolean protect(String windowTitle) {
         if (!System.getProperty("os.name", "").toLowerCase().contains("windows")) return false;
-        if (Boolean.getBoolean("unit1.noguard")) return false;
+        if (Boolean.getBoolean("unitapp.noguard")) return false;
         try {
             Linker linker = Linker.nativeLinker();
             SymbolLookup user32 = SymbolLookup.libraryLookup("user32", Arena.global());

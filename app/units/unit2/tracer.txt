@@ -1,0 +1,81 @@
+# Programs for the trace simulator (Tutorial: "Try it: Trace simulator").
+#   program Title
+#   var name type scope          (scope = the method the variable belongs to)
+#   code text                    (one line of the program; everything after "code " is kept)
+#   step line | a=5; b=8 | dropped vars | printed text | explanation (HTML allowed)
+
+program Swap
+var a int main
+var b int main
+var temp int main
+code int a = 5;
+code int b = 8;
+code int temp = a;
+code a = b;
+code b = temp;
+code System.out.println(a + " " + b);
+step 1 | a=5 | | | A box named <b>a</b> is created and gets 5.
+step 2 | b=8 | | | A box named <b>b</b> gets 8.
+step 3 | temp=5 | | | <b>temp</b> gets a <b>copy</b> of a's value. a still holds 5.
+step 4 | a=8 | | | a gets a copy of b's value. The old 5 in a is gone, but it's safe in temp.
+step 5 | b=5 | | | b gets the saved value from temp. The swap is done.
+step 6 | | | 8 5 | Prints a, a space, then b.
+
+program Digits
+var num int main
+var units int main
+var tens int main
+var hundreds int main
+var sum int main
+code int num = 472;
+code int units = num % 10;
+code int tens = num / 10 % 10;
+code int hundreds = num / 100;
+code int sum = units + tens + hundreds;
+code System.out.println("Sum: " + sum);
+step 1 | num=472 | | | num gets 472.
+step 2 | units=2 | | | 472 % 10: 472 = 47 x 10 + <b>2</b>. The remainder is the last digit.
+step 3 | tens=7 | | | Left to right: 472 / 10 = 47 (int division), then 47 % 10 = <b>7</b>.
+step 4 | hundreds=4 | | | 472 / 100 = 4 (the .72 is thrown away).
+step 5 | sum=13 | | | 2 + 7 + 4 = 13.
+step 6 | | | Sum: 13 | "Sum: " + 13 glues the number onto the text.
+
+program int vs double
+var total int main
+var count int main
+var avg1 double main
+var avg2 double main
+var rounded int main
+code int total = 17;
+code int count = 4;
+code double avg1 = total / count;
+code double avg2 = (double) total / count;
+code int rounded = (int) Math.round(avg2);
+code System.out.println(avg1 + " " + avg2 + " " + rounded);
+step 1 | total=17 | | | total gets 17.
+step 2 | count=4 | | | count gets 4.
+step 3 | avg1=4.0 | | | Watch out: 17 / 4 is <b>int / int</b> = 4. Only then is it put in a double box: 4.0. The .25 is already lost!
+step 4 | avg2=4.25 | | | The cast turns 17 into 17.0 first, so it's double / int = 4.25.
+step 5 | rounded=4 | | | Math.round(4.25) = 4. The (int) cast lets it fit in an int box.
+step 6 | | | 4.0 4.25 4 | A double always prints with a decimal point, even 4.0.
+
+program Method call
+var x int main
+var y int main
+var n int square
+code public static void main(String[] args) {
+code     int x = 3;
+code     int y = square(x);
+code     System.out.println(x + " " + y);
+code }
+code
+code private static int square(int n) {
+code     n = n * n;
+code     return n;
+code }
+step 2 | x=3 | | | x gets 3.
+step 7 | n=3 | | | Calling <b>square(x)</b>: the <b>value</b> 3 is copied into the parameter n. n is a separate box that belongs to square.
+step 8 | n=9 | | | n becomes 9. Only n changes: <b>x is still 3</b>. That's call by value.
+step 9 | | | | return n: the value 9 is sent back to the place where square was called.
+step 3 | y=9 | n | | The call is replaced by 9, so y gets 9. The method is done, and its box n disappears.
+step 4 | | | 3 9 | x was never changed by the method.

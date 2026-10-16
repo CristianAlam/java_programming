@@ -1,0 +1,7 @@
+public static void main(String[] args) {
+    // Call printCircle for the radiuses 1, 2.5 and 10
+
+}
+
+// Write circleArea, circlePerimeter and printCircle here
+

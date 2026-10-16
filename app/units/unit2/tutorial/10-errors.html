@@ -1,0 +1,9 @@
+<h1>10. Three Kinds of Errors</h1>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="20%">Kind</th><th width="36%">When you find out</th><th>Examples</th></tr>
+  <tr><td><b>Syntax</b> (compile) error</td><td>Before running. The program won't start, and you get the line number.</td><td>Missing <code>;</code><br><code>int n = 2.5;</code> (wrong type)<br>Using a variable that was never declared</td></tr>
+  <tr><td><b>Runtime</b> error</td><td>While running. The program crashes with a red message (an <i>exception</i>).</td><td><code>10 / 0</code> gives <code>ArithmeticException: / by zero</code><br>Typing <code>abc</code> into <code>nextInt()</code> gives <code>InputMismatchException</code></td></tr>
+  <tr><td><b>Logic</b> error</td><td>Never automatically! The program runs but the answer is wrong. Only <b>testing</b> finds it.</td><td><code>a + b / 2</code> instead of <code>(a + b) / 2</code><br><code>total / count</code> giving 4.0 instead of 4.25</td></tr>
+</table>
+<div class="tip"><b>How to test</b><br>Before running, work out the expected answer by hand for a few inputs. Choose inputs that are easy to check, and some tricky ones: 0, negative numbers, odd numbers for division.</div>
+<div class="warn"><b>Division by zero with double</b><br>Only <code>int</code> division by zero crashes. <code>5.0 / 0</code> gives <code>Infinity</code>, which is still a logic error.</div>

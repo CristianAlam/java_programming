@@ -1,0 +1,60 @@
+<h1>8. Helper Methods</h1>
+<p>You've already <i>used</i> methods that others wrote: <code>Math.sqrt</code>, <code>big.fill()</code>, <code>in.nextInt()</code>. Now you'll <b>write your own</b>. A method is a named piece of code that does one task. You write it once and call it whenever you need it.</p>
+<table class="cards" cellspacing="8" width="100%">
+<tr>
+  <td class="card" width="33%"><div class="card-title">Split a big task</div><div class="card-text">Each method solves one small part (refinement)</div></td>
+  <td class="card" width="33%"><div class="card-title">Reuse</div><div class="card-text">Write once, call many times</div></td>
+  <td class="card" width="33%"><div class="card-title">Read and test</div><div class="card-text">Small pieces are easier to understand and check</div></td>
+</tr>
+</table>
+<pre><span class="kw">public</span> <span class="kw">class</span> <span class="ty">Circles</span> {
+    <span class="kw">public</span> <span class="kw">static</span> <span class="kw">void</span> main(<span class="ty">String</span>[] args) {
+        <span class="kw">double</span> a = circleArea(<span class="num">2.5</span>);                <span class="cm">// call: 2.5 goes into radius, the result comes back</span>
+        <span class="ty">System</span>.out.println(<span class="str">"Area: "</span> + a);
+        printLine();                               <span class="cm">// call a method that returns nothing</span>
+        <span class="ty">System</span>.out.println(circleArea(<span class="num">1</span>) * <span class="num">2</span>);     <span class="cm">// the returned value used in an expression</span>
+    }
+
+    <span class="cm">// Returns the area of a circle with the given radius.</span>
+    <span class="kw">private</span> <span class="kw">static</span> <span class="kw">double</span> circleArea(<span class="kw">double</span> radius) {
+        <span class="kw">return</span> <span class="ty">Math</span>.<span class="ty">PI</span> * radius * radius;
+    }
+
+    <span class="cm">// Prints a separator line. Returns nothing (void).</span>
+    <span class="kw">private</span> <span class="kw">static</span> <span class="kw">void</span> printLine() {
+        <span class="ty">System</span>.out.println(<span class="str">"--------------------"</span>);
+    }
+}</pre>
+
+<h2>Anatomy of a method</h2>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="16%">Part</th><th width="30%">In the example</th><th>Meaning</th></tr>
+  <tr><td>Opening</td><td><code>private static</code></td><td>A fixed opening for now. You'll learn what it means later.</td></tr>
+  <tr><td>Return type</td><td><code>double</code></td><td>The type of the value the method gives back. <code>void</code> = gives nothing back.</td></tr>
+  <tr><td>Name</td><td><code>circleArea</code></td><td>A verb, or a description of what it returns, in camelCase</td></tr>
+  <tr><td>Parameters</td><td><code>(double radius)</code></td><td>The values the method needs, each with a type. Can be empty: <code>()</code></td></tr>
+  <tr><td>Body</td><td><code>{ ... }</code></td><td>The commands that run on each call</td></tr>
+  <tr><td><code>return</code></td><td><code>return Math.PI * ...;</code></td><td>Ends the method and sends the value back to where it was called</td></tr>
+</table>
+<p>The <b>signature</b> is the first line: return type, name, and parameters. It tells you how to call the method without reading its body.</p>
+
+<h2>What happens during a call</h2>
+<ol>
+  <li>Java calculates the value in the parentheses: <code>circleArea(r * 2)</code> with <code>r = 1.5</code> gives <code>3.0</code>.</li>
+  <li>The value is <b>copied</b> into the parameter: <code>radius = 3.0</code>.</li>
+  <li>The body runs until <code>return</code>.</li>
+  <li>The returned value <b>replaces the call</b> in the expression: <code>double a = 28.27...;</code></li>
+</ol>
+<div class="tip"><b>Call by value</b><br>A parameter is a <b>copy</b> of the value you pass. If the method changes its parameter, the caller's variable stays the same. See it in <b>Try it: Trace simulator</b> (program "Method call").</div>
+<div class="warn"><b>Types must match</b><br>A <code>double</code> parameter accepts any expression whose value is a number: <code>circleArea(5)</code>, <code>circleArea(x + 1)</code>, <code>circleArea(Math.sqrt(2))</code>. But an <code>int</code> parameter won't accept <code>2.5</code>. Also, a method that isn't <code>void</code> must always reach a <code>return</code>.</div>
+
+<h2>Refinement: splitting a task into methods</h2>
+<p>Task: <i>"Read the number of guests. Each eats 3 slices, a pizza has 8 slices and costs 45 shekels. Print how many pizzas to order and the total cost."</i></p>
+<pre><span class="cm">// main tells the story; each helper does one small job</span>
+<span class="kw">int</span> guests = in.nextInt();
+<span class="kw">int</span> pizzas = pizzasNeeded(guests * <span class="num">3</span>);
+<span class="ty">System</span>.out.println(<span class="str">"Order "</span> + pizzas + <span class="str">" pizzas, cost: "</span> + cost(pizzas));
+
+<span class="kw">private</span> <span class="kw">static</span> <span class="kw">int</span> pizzasNeeded(<span class="kw">int</span> slices) { <span class="kw">return</span> (slices + <span class="num">7</span>) / <span class="num">8</span>; }   <span class="cm">// round UP without if</span>
+<span class="kw">private</span> <span class="kw">static</span> <span class="kw">int</span> cost(<span class="kw">int</span> pizzas)        { <span class="kw">return</span> pizzas * <span class="num">45</span>; }</pre>
+<div class="tip"><b>In this app</b><br>When an exercise needs helper methods, the editor holds the <b>whole class</b>: you see <code>main</code> yourself, and you write your methods below it, inside the class.</div>

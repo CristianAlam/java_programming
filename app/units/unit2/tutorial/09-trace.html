@@ -1,0 +1,26 @@
+<h1>9. Trace Tables</h1>
+<p>A <b>trace table</b> lets you run a program <b>by hand</b>, line by line, to see what it does and find bugs. It has one column per variable and one for the output. Every row is one step.</p>
+<ol>
+  <li>Make a column for the line number, one per variable, and one for the output.</li>
+  <li>Go through the code in the order it runs. For each line that changes something, add a row.</li>
+  <li>Write each new value. Leave a cell empty if the variable doesn't exist yet.</li>
+</ol>
+<p>Example:</p>
+<pre><span class="cm">1</span>  <span class="kw">int</span> a = <span class="num">5</span>;
+<span class="cm">2</span>  <span class="kw">int</span> b = <span class="num">8</span>;
+<span class="cm">3</span>  <span class="kw">int</span> temp = a;
+<span class="cm">4</span>  a = b;
+<span class="cm">5</span>  b = temp;
+<span class="cm">6</span>  <span class="ty">System</span>.out.println(a + <span class="str">" "</span> + b);</pre>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="70%">
+  <tr><th>Line</th><th>a</th><th>b</th><th>temp</th><th>Output</th></tr>
+  <tr><td>1</td><td><b>5</b></td><td></td><td></td><td></td></tr>
+  <tr><td>2</td><td>5</td><td><b>8</b></td><td></td><td></td></tr>
+  <tr><td>3</td><td>5</td><td>8</td><td><b>5</b></td><td></td></tr>
+  <tr><td>4</td><td><b>8</b></td><td>8</td><td>5</td><td></td></tr>
+  <tr><td>5</td><td>8</td><td><b>5</b></td><td>5</td><td></td></tr>
+  <tr><td>6</td><td>8</td><td>5</td><td>5</td><td><code>8 5</code></td></tr>
+</table>
+<div class="tip"><b>Exams love trace tables</b><br>In the Bagrut, many questions are "what does this code print?". The trace table is how you answer them without mistakes.</div>
+<div class="tip"><b>Try it</b><br>Open <b>Try it: Trace simulator</b> in the list on the left. It runs four programs one line at a time and fills in the trace table for you.</div>
+<div class="tip"><b>IntelliJ does this for you, too</b><br>Set a breakpoint, press <b>Debug</b>, and step with <span class="kbd">F8</span>. The <b>Variables</b> panel shows every box and its current value. To follow a call into a method, use <span class="kbd">F7</span> (<i>Step Into</i>).</div>

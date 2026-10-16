@@ -1,0 +1,3 @@
+int big = 2147483647;           // the largest int
+System.out.println("big + 1 = " + (big + 1));       // wraps around to the most negative int!
+System.out.println("0.1 + 0.2 = " + (0.1 + 0.2));   // not exactly 0.3

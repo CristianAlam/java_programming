@@ -1,0 +1,11 @@
+System.out.println("17 / 5 = " + (17 / 5));   // 3
+System.out.println("17 % 5 = " + (17 % 5));   // 2
+
+int totalMinutes = 135;
+int hours = totalMinutes / 60;
+int minutes = totalMinutes % 60;
+System.out.println(totalMinutes + " minutes = " + hours + " h " + minutes + " min");
+
+int num = 472;
+System.out.println("units: " + (num % 10) + ", tens: " + (num / 10 % 10) + ", hundreds: " + (num / 100));
+System.out.println("Is 7 odd? remainder of 7 % 2 = " + (7 % 2));   // 1 means odd

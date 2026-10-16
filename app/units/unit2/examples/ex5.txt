@@ -1,0 +1,11 @@
+System.out.println(7 / 2);      // 3   (int / int)
+System.out.println(7.0 / 2);    // 3.5 (double / int)
+
+int total = 17, count = 4;
+double wrongAvg = total / count;            // 4.0: int division happened first
+double rightAvg = (double) total / count;   // 4.25
+System.out.println("wrong: " + wrongAvg + ", right: " + rightAvg);
+
+double d = 5;                   // int -> double happens automatically
+int cut = (int) 9.99;           // double -> int needs a cast, and it CUTS (no rounding)
+System.out.println("d = " + d + ", cut = " + cut);

@@ -1,0 +1,28 @@
+public static void main(String[] args) {
+    double area = circleArea(2.5);             // the returned value goes into area
+    System.out.println("Area of radius 2.5: " + area);
+    printLine();
+    System.out.println("Area of radius 1, doubled: " + circleArea(1) * 2);   // used inside an expression
+    System.out.println("Average of 7 and 8: " + average(7, 8));
+    System.out.println("Pizzas for 10 guests: " + pizzasNeeded(10 * 3));
+}
+
+// Returns the area of a circle with the given radius.
+private static double circleArea(double radius) {
+    return Math.PI * radius * radius;
+}
+
+// Prints a separator line. Returns nothing.
+private static void printLine() {
+    System.out.println("--------------------");
+}
+
+// Returns the average of two whole numbers, as a decimal.
+private static double average(int a, int b) {
+    return (a + b) / 2.0;     // 2.0 makes it double division
+}
+
+// Returns how many 8-slice pizzas are needed for the given number of slices (rounded up).
+private static int pizzasNeeded(int slices) {
+    return (slices + 7) / 8;
+}

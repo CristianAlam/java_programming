@@ -1,0 +1,2 @@
+Scanner in = new Scanner(System.in);
+System.out.print("Enter temperature in Celsius: ");

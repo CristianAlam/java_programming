@@ -1,0 +1,17 @@
+int a = 5;
+int b = 8;
+int copy = a;              // copy gets 5
+a = 100;                   // changing a doesn't change copy
+System.out.println("a = " + a + ", copy = " + copy);
+
+a = 5;
+int temp = a;              // swap a and b using a temporary box
+a = b;
+b = temp;
+System.out.println("After swap: a = " + a + ", b = " + b);
+
+int counter = 0;
+counter = counter + 1;     // take the old value, add 1, store it back
+counter += 5;              // shortcut for counter = counter + 5
+counter++;                 // shortcut for counter = counter + 1
+System.out.println("counter = " + counter);

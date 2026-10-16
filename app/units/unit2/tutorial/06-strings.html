@@ -1,0 +1,16 @@
+<h1>6. Text and Output: String</h1>
+<p>Text in Java has the type <code>String</code>. For now you only need two things: storing text in a variable, and gluing pieces together with <code>+</code> (<b>concatenation</b>).</p>
+<pre><span class="ty">String</span> name = <span class="str">"Dana"</span>;
+<span class="kw">int</span> age = <span class="num">16</span>;
+<span class="ty">System</span>.out.println(<span class="str">"Hi "</span> + name + <span class="str">", you are "</span> + age + <span class="str">"."</span>);   <span class="cm">// Hi Dana, you are 16.</span></pre>
+<p>When one side of <code>+</code> is a <code>String</code>, the other side is turned into text and glued on.</p>
+
+<h2>Watch the order!</h2>
+<p><code>+</code> works left to right. Once the result is text, every following <code>+</code> glues text:</p>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="34%">Code</th><th width="22%">Prints</th><th>Why</th></tr>
+  <tr><td><code>"Sum: " + 3 + 4</code></td><td><code>Sum: 34</code></td><td><code>"Sum: 3"</code>, then <code>+ 4</code> glues "4"</td></tr>
+  <tr><td><code>"Sum: " + (3 + 4)</code></td><td><code>Sum: 7</code></td><td>Parentheses first: 3 + 4 = 7</td></tr>
+  <tr><td><code>3 + 4 + " is the sum"</code></td><td><code>7 is the sum</code></td><td>3 + 4 = 7 first, then text</td></tr>
+</table>
+<div class="tip"><b>Rule of thumb</b><br>Put any calculation inside a <code>println</code> in <b>parentheses</b>: <code>"Total: " + (price * amount)</code>.</div>

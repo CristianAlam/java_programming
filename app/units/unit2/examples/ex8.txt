@@ -1,0 +1,6 @@
+// Press Run several times: you get new numbers each time.
+double r = Math.random();                      // 0.0 up to (not including) 1.0
+int die = (int) (Math.random() * 6) + 1;       // 1 to 6
+int lotto = (int) (Math.random() * 37) + 1;    // 1 to 37
+System.out.println("random: " + r);
+System.out.println("die: " + die + ", lotto ball: " + lotto);

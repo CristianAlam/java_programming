@@ -1,0 +1,6 @@
+String name = "Dana";
+int age = 16;
+System.out.println("Hi " + name + ", you are " + age + ".");
+System.out.println("Sum: " + 3 + 4);       // Sum: 34   (text, then text)
+System.out.println("Sum: " + (3 + 4));     // Sum: 7    (parentheses first)
+System.out.println(3 + 4 + " is the sum"); // 7 is the sum

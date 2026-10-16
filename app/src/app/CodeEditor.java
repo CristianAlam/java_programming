@@ -144,20 +144,20 @@ final class CodeEditor extends JTextPane {
         ActionMap am = getActionMap();
         int ctrl = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
 
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ctrl), "unit1-undo");
-        am.put("unit1-undo", action(() -> { if (undo.canUndo()) undo.undo(); }));
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ctrl), "unit1-redo");
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ctrl | InputEvent.SHIFT_DOWN_MASK), "unit1-redo");
-        am.put("unit1-redo", action(() -> { if (undo.canRedo()) undo.redo(); }));
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ctrl), "editor-undo");
+        am.put("editor-undo", action(() -> { if (undo.canUndo()) undo.undo(); }));
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Y, ctrl), "editor-redo");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ctrl | InputEvent.SHIFT_DOWN_MASK), "editor-redo");
+        am.put("editor-redo", action(() -> { if (undo.canRedo()) undo.redo(); }));
 
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), "unit1-tab");
-        am.put("unit1-tab", action(() -> replaceSelection("    ")));
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), "editor-tab");
+        am.put("editor-tab", action(() -> replaceSelection("    ")));
 
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "unit1-enter");
-        am.put("unit1-enter", action(this::newLineWithIndent));
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "editor-enter");
+        am.put("editor-enter", action(this::newLineWithIndent));
 
-        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, ctrl), "unit1-comment");
-        am.put("unit1-comment", action(this::toggleComment));
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, ctrl), "editor-comment");
+        am.put("editor-comment", action(this::toggleComment));
     }
 
     private static Action action(Runnable r) {

@@ -127,7 +127,7 @@
   .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 8px 0 16px; }
   .mini { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
   .mini .ic { font-size: 1.4rem; }
-  .mini b { display: block; margin: 2px 0; }
+  .mini > b { display: block; margin: 2px 0; }
   .mini span { font-size: .88rem; color: var(--muted); }
 
   .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 16px; font-size: .9rem; }
@@ -387,7 +387,7 @@ javac 25...</div>
 
     <!-- 5 -->
     <section id="structure">
-      <h2><span class="n">5</span>The Basic Structure: Class + <code>main</code></h2>
+      <h2><span class="n">5</span><span>The Basic Structure: Class + <code>main</code></span></h2>
       <p>Every Java program in this course lives inside a <b>class</b> and starts running from the <b><code>main</code></b> method.</p>
 <pre><code><span class="kw">public class</span> <span class="ty">Hello</span> {                              <span class="cm">// the class: a "container" for the program</span>
     <span class="kw">public static void</span> main(<span class="ty">String</span>[] args) {      <span class="cm">// main: where the program starts</span>

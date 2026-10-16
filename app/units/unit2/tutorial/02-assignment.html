@@ -1,0 +1,32 @@
+<h1>2. Assignment</h1>
+<p>The <code>=</code> sign in Java is <b>not</b> "equals" like in math. It's a command: <b>"calculate the right side, then put the result in the box on the left."</b></p>
+<pre><span class="kw">int</span> x = <span class="num">5</span>;
+x = x + <span class="num">1</span>;     <span class="cm">// right side: 5 + 1 = 6. Put 6 into x. (In math this would be nonsense!)</span>
+x = x * <span class="num">2</span>;     <span class="cm">// x is now 12</span></pre>
+
+<h2>Assignment copies, it doesn't move</h2>
+<pre><span class="kw">int</span> a = <span class="num">7</span>;
+<span class="kw">int</span> b = a;     <span class="cm">// b gets a COPY of 7. a still holds 7.</span>
+a = <span class="num">100</span>;       <span class="cm">// changing a later does NOT change b</span></pre>
+<table cellspacing="0" cellpadding="0"><tr>
+  <td align="center"><table cellspacing="2" cellpadding="8" bgcolor="#3b6ef5"><tr><td bgcolor="#ffffff" width="80" align="center"><b><code>100</code></b></td></tr></table><code>a</code></td>
+  <td width="24"></td>
+  <td align="center"><table cellspacing="2" cellpadding="8" bgcolor="#3b6ef5"><tr><td bgcolor="#ffffff" width="80" align="center"><b><code>7</code></b></td></tr></table><code>b</code></td>
+</tr></table>
+<div class="warn"><b>Not like the buckets!</b><br>In Unit 1, <code>pourInto</code> <i>moved</i> water: one bucket lost what the other gained. Assignment is different: it's like <b>photocopying</b> a note. The original stays exactly as it was.</div>
+
+<h2>Classic task: swapping two variables</h2>
+<p>To swap the values of <code>a</code> and <code>b</code>, you need a third, temporary box. Otherwise one value is overwritten and lost:</p>
+<pre><span class="kw">int</span> temp = a;   <span class="cm">// save a's value</span>
+a = b;          <span class="cm">// now a can be overwritten</span>
+b = temp;       <span class="cm">// put the saved value into b</span></pre>
+<p>Watch it step by step in <b>Try it: Trace simulator</b> (program "Swap").</p>
+
+<h2>Shortcuts you'll see a lot</h2>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="30%">Shortcut</th><th>Means</th></tr>
+  <tr><td><code>x += 5;</code></td><td><code>x = x + 5;</code> (also <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>)</td></tr>
+  <tr><td><code>x++;</code></td><td><code>x = x + 1;</code></td></tr>
+  <tr><td><code>x--;</code></td><td><code>x = x - 1;</code></td></tr>
+</table>
+<div class="warn"><b>Use before giving a value = error</b><br><code>int n; System.out.println(n);</code> doesn't compile: <i>"variable n might not have been initialized"</i>. A box must get a value before you read it.</div>

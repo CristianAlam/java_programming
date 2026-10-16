@@ -1,0 +1,48 @@
+<h1>1. Variables</h1>
+<p>In Unit 1 every program printed the same thing each time. To work with data, a program needs to <b>remember values</b>. It does that with <b>variables</b>.</p>
+<p>A <b>variable</b> is a named box in the computer's memory that holds one value.</p>
+
+<table cellspacing="0" cellpadding="0"><tr>
+  <td align="center"><table cellspacing="2" cellpadding="8" bgcolor="#3b6ef5"><tr><td bgcolor="#ffffff" width="80" align="center"><b><code>16</code></b></td></tr></table><code>age</code><br><span class="muted">int</span></td>
+  <td width="24"></td>
+  <td align="center"><table cellspacing="2" cellpadding="8" bgcolor="#3b6ef5"><tr><td bgcolor="#ffffff" width="80" align="center"><b><code>1.72</code></b></td></tr></table><code>height</code><br><span class="muted">double</span></td>
+  <td width="24"></td>
+  <td align="center"><table cellspacing="2" cellpadding="8" bgcolor="#3b6ef5"><tr><td bgcolor="#ffffff" width="80" align="center"><b><code>3</code></b></td></tr></table><code>siblings</code><br><span class="muted">int</span></td>
+</tr></table>
+
+<p style="margin-top:14px">Every variable has three things:</p>
+<table class="cards" cellspacing="8" width="100%">
+<tr>
+  <td class="card" width="33%"><div class="card-title">A name</div><div class="card-text">Fixed when you create it: <code>age</code></div></td>
+  <td class="card" width="33%"><div class="card-title">A type</div><div class="card-text">What kind of value it holds. Fixed: <code>int</code></div></td>
+  <td class="card" width="33%"><div class="card-title">A value</div><div class="card-text">What's inside right now. This one <b>can change</b>, hence "variable".</div></td>
+</tr>
+</table>
+
+<h2>Creating a variable</h2>
+<pre><span class="kw">int</span> age;                  <span class="cm">// declaration: create a box called age for whole numbers</span>
+age = <span class="num">16</span>;                 <span class="cm">// assignment: put 16 into the box</span>
+
+<span class="kw">double</span> height = <span class="num">1.72</span>;     <span class="cm">// declaration + initialization in one line (most common)</span>
+<span class="kw">int</span> a = <span class="num">3</span>, b = <span class="num">4</span>;         <span class="cm">// several of the same type in one line</span>
+
+<span class="ty">System</span>.out.println(age);     <span class="cm">// prints the VALUE: 16</span>
+<span class="ty">System</span>.out.println(<span class="str">"age"</span>);   <span class="cm">// prints the TEXT:  age</span></pre>
+
+<h2>The two number types in this course</h2>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="12%">Type</th><th width="22%">Holds</th><th width="22%">Examples</th><th>Range</th></tr>
+  <tr><td><code>int</code></td><td>Whole numbers</td><td><code>0</code>, <code>-7</code>, <code>2026</code></td><td>About plus or minus 2.1 billion (-2,147,483,648 to 2,147,483,647)</td></tr>
+  <tr><td><code>double</code></td><td>Decimal numbers</td><td><code>3.14</code>, <code>-0.5</code>, <code>7.0</code></td><td>Huge (up to about 10<sup>308</sup>), but only about 15 accurate digits</td></tr>
+</table>
+<div class="warn"><b>Memory is limited</b><br>Unlike numbers in math, numbers in a computer have a size limit, because each box has a fixed size in memory. Going past the limit gives strange results: <code>2147483647 + 1</code> is <code>-2147483648</code>! And <code>0.1 + 0.2</code> prints <code>0.30000000000000004</code>, because <code>double</code> can't store every decimal exactly.</div>
+
+<h2>Naming rules</h2>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="44%">Rule</th><th width="28%">OK</th><th>Not OK</th></tr>
+  <tr><td>Letters, digits and <code>_</code> only</td><td><code>total_2</code></td><td><code>my-age</code>, <code>my age</code></td></tr>
+  <tr><td>Can't start with a digit</td><td><code>price2</code></td><td><code>2price</code></td></tr>
+  <tr><td>Can't be a Java word</td><td><code>myClass</code></td><td><code>int</code>, <code>class</code>, <code>new</code></td></tr>
+  <tr><td><b>Convention:</b> camelCase and meaningful</td><td><code>numOfStudents</code></td><td><code>x1</code>, <code>NUMOFSTUDENTS</code></td></tr>
+</table>
+<div class="tip"><b>Good names are documentation</b><br><code>double avg = sum / count;</code> explains itself. <code>double q = w / z;</code> doesn't.</div>

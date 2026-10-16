@@ -1,0 +1,17 @@
+<h1>11. Objects + Variables</h1>
+<p>Now that you have variables, you can <b>store</b> the values an object gives back, and <b>calculate</b> with them. The <code>Bucket</code> class from Unit 1 still works the same way:</p>
+<pre><span class="ty">Bucket</span> big = <span class="kw">new</span> <span class="ty">Bucket</span>(<span class="num">7</span>);
+<span class="ty">Bucket</span> small = <span class="kw">new</span> <span class="ty">Bucket</span>(<span class="num">3</span>);
+big.fill();
+big.pourInto(small);
+
+<span class="kw">int</span> left = big.getCurrentAmount();                      <span class="cm">// 4: store the returned value</span>
+<span class="kw">double</span> percent = <span class="num">100.0</span> * left / big.getCapacity();      <span class="cm">// 57.14...: calculate with it</span>
+<span class="ty">System</span>.out.println(<span class="str">"big is "</span> + <span class="ty">Math</span>.round(percent) + <span class="str">"% full"</span>);   <span class="cm">// big is 57% full</span></pre>
+<div class="tip"><b>In this app</b><br>The <code>Bucket</code> class is ready to use in every exercise. In IntelliJ you would add <code>import unit1.Bucket;</code> at the top of the file.</div>
+<table class="grid" cellspacing="1" cellpadding="7" bgcolor="#e2e5ee" width="100%">
+  <tr><th width="34%">Kind of class</th><th width="28%">Example</th><th>How you use it</th></tr>
+  <tr><td>Class you create objects from</td><td><code>Bucket</code>, <code>Scanner</code></td><td><code>new</code> first, then <code>object.method()</code></td></tr>
+  <tr><td>Library class</td><td><code>Math</code></td><td>No <code>new</code>: <code>ClassName.method()</code></td></tr>
+</table>
+<div class="tip"><b>Tracing objects</b><br>In a trace table, a variable that holds an object gets a column too. Write the object's state in it, e.g. <code>big: 4/7</code>.</div>

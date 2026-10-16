@@ -1,0 +1,2 @@
+Scanner in = new Scanner(System.in);
+System.out.print("Enter x1 y1 x2 y2: ");

@@ -1,0 +1,802 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 2 Basics</title>
+<style>
+  :root {
+    --bg: #f6f7fb; --surface: #ffffff; --text: #1d2233; --muted: #5d6478; --border: #e2e5ee;
+    --accent: #3b6ef5; --accent-soft: #e8eefe;
+    --tip: #0f9d7a; --tip-soft: #e1f5ee; --warn: #c2410c; --warn-soft: #fff1e6;
+    --code-bg: #1e2230; --code-text: #e6e8f0; --hl: rgba(124,157,255,.22);
+    --kw: #c792ea; --str: #c3e88d; --cm: #7f8aa8; --ty: #82aaff; --num: #f78c6c;
+    --changed: #fff4c2;
+    --shadow: 0 1px 2px rgba(20,30,60,.06), 0 4px 16px rgba(20,30,60,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12141b; --surface: #1b1e28; --text: #e7e9f0; --muted: #9aa1b5; --border: #2c3040;
+      --accent: #7c9dff; --accent-soft: #232c4a;
+      --tip: #3fd0a8; --tip-soft: #183a32; --warn: #fb923c; --warn-soft: #3a2415;
+      --code-bg: #0e1016; --changed: #4a3f12;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12141b; --surface: #1b1e28; --text: #e7e9f0; --muted: #9aa1b5; --border: #2c3040;
+    --accent: #7c9dff; --accent-soft: #232c4a;
+    --tip: #3fd0a8; --tip-soft: #183a32; --warn: #fb923c; --warn-soft: #3a2415;
+    --code-bg: #0e1016; --changed: #4a3f12;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 16px rgba(0,0,0,.25);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 16px/1.65 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  a { color: var(--accent); }
+
+  .layout { max-width: 1180px; margin: 0 auto; padding: 0 16px; display: grid;
+            grid-template-columns: 230px minmax(0, 1fr); gap: 40px; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; gap: 0; } }
+
+  /* Sidebar */
+  aside { position: sticky; top: 0; align-self: start; padding: 32px 0; max-height: 100vh; overflow-y: auto; }
+  aside .back { font-size: .85rem; text-decoration: none; display: inline-block; margin-bottom: 18px; }
+  aside .label { font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  aside ol { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+  aside li a { display: flex; gap: 10px; padding: 6px 10px; border-radius: 8px; color: var(--muted);
+               text-decoration: none; font-size: .9rem; line-height: 1.35; }
+  aside li a::before { counter-increment: s; content: counter(s); font-weight: 700; color: var(--accent); min-width: 18px; }
+  aside li a:hover, aside li a.active { background: var(--accent-soft); color: var(--text); }
+  @media (max-width: 860px) {
+    aside { position: static; max-height: none; padding: 20px 0 0; }
+    aside ol { display: flex; flex-wrap: wrap; gap: 4px; }
+    aside li a { padding: 4px 10px; border: 1px solid var(--border); background: var(--surface); }
+  }
+
+  main { padding: 32px 0 80px; min-width: 0; }
+
+  .hero { background: linear-gradient(135deg, var(--accent), #7b5cf0); color: #fff; border-radius: 18px;
+          padding: 28px 28px 24px; box-shadow: var(--shadow); }
+  .hero .kicker { font-size: .8rem; font-weight: 600; opacity: .85; letter-spacing: .06em; text-transform: uppercase; }
+  .hero h1 { margin: 4px 0 10px; font-size: clamp(1.8rem, 5vw, 2.5rem); letter-spacing: -.02em; line-height: 1.15; }
+  .hero p { margin: 0; opacity: .92; max-width: 60ch; }
+  .hero .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .hero .pills span { background: rgba(255,255,255,.18); border-radius: 99px; padding: 3px 12px; font-size: .82rem; }
+
+  section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+            padding: 24px 26px; margin-top: 22px; box-shadow: var(--shadow); scroll-margin-top: 16px; }
+  @media (max-width: 560px) { section { padding: 20px 16px; } .hero { padding: 22px 18px; } }
+  section > h2 { margin: 0 0 12px; font-size: 1.4rem; display: flex; align-items: center; gap: 12px; }
+  section > h2 .n { width: 34px; height: 34px; border-radius: 10px; background: var(--accent-soft); color: var(--accent);
+                    display: grid; place-items: center; font-size: 1rem; flex: none; }
+  section > h2 small { color: var(--muted); font-weight: 400; font-size: .9rem; }
+  h3 { font-size: 1.08rem; margin: 22px 0 8px; }
+  p { margin: 0 0 12px; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 6px 0 14px; border: 1px solid var(--border); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: .93rem; }
+  th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { background: var(--accent-soft); font-weight: 600; }
+  tr:last-child td { border-bottom: 0; }
+
+  /* Code */
+  code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: .9em;
+         background: var(--accent-soft); padding: 1px 6px; border-radius: 5px; }
+  pre { background: var(--code-bg); color: var(--code-text); border-radius: 12px; padding: 16px 18px;
+        overflow-x: auto; margin: 8px 0 16px; font-size: .88rem; line-height: 1.6; }
+  pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+  .kw { color: var(--kw); } .str { color: var(--str); } .cm { color: var(--cm); font-style: italic; }
+  .ty { color: var(--ty); } .num { color: var(--num); }
+
+  /* Callouts */
+  .callout { border-radius: 12px; padding: 12px 16px; margin: 10px 0 16px; font-size: .95rem; border-left: 4px solid; }
+  .callout.tip { background: var(--tip-soft); border-color: var(--tip); }
+  .callout.warn { background: var(--warn-soft); border-color: var(--warn); }
+  .callout > b:first-child { display: block; margin-bottom: 2px; }
+
+  /* Steps / cards */
+  .steps { list-style: none; padding: 0; margin: 8px 0 16px; counter-reset: st; display: grid; gap: 8px; }
+  .steps li { counter-increment: st; position: relative; padding-left: 40px; min-height: 26px; line-height: 1.6; }
+  .steps li::before { content: counter(st); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--accent);
+                      color: #fff; display: grid; place-items: center; font-size: .8rem; font-weight: 700; }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 8px 0 16px; }
+  .mini { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+  .mini .ic { font-size: 1.4rem; }
+  .mini > b { display: block; margin: 2px 0; }
+  .mini span { font-size: .88rem; color: var(--muted); }
+
+  /* Variable boxes (static pictures) */
+  .boxes { display: flex; flex-wrap: wrap; gap: 14px; margin: 10px 0 16px; }
+  .var { text-align: center; min-width: 86px; }
+  .var .cell { border: 2px solid var(--accent); border-radius: 10px; padding: 8px 12px; font-family: ui-monospace, Consolas, monospace;
+               font-weight: 700; font-size: 1.05rem; background: var(--surface); min-height: 44px; transition: background .4s; }
+  .var .nm { font-family: ui-monospace, Consolas, monospace; font-size: .85rem; margin-top: 4px; }
+  .var .tp { font-size: .72rem; color: var(--muted); }
+  .var.changed .cell { background: var(--changed); }
+
+  /* Quiz cards */
+  .quiz { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 8px 0 16px; }
+  .quiz button { font: inherit; text-align: left; border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px;
+                 background: var(--surface); color: var(--text); cursor: pointer; }
+  .quiz button:hover { border-color: var(--accent); }
+  .quiz code { display: block; background: none; padding: 0; font-size: .95rem; }
+  .quiz .ans { display: block; margin-top: 4px; font-size: .85rem; color: var(--muted); }
+  .quiz button.shown .ans { color: var(--tip); font-weight: 600; }
+
+  /* Tracer */
+  .tracer { border: 1px solid var(--border); border-radius: 14px; padding: 16px; margin: 12px 0 8px; background: var(--bg); }
+  .tr-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tr-tabs button, .tr-ctrl button { font: inherit; font-size: .85rem; padding: 6px 12px; border-radius: 9px; cursor: pointer;
+                     border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+  .tr-tabs button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .tr-ctrl button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+  .tr-ctrl button:disabled { opacity: .45; cursor: default; }
+  .tr-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; }
+  @media (max-width: 760px) { .tr-grid { grid-template-columns: 1fr; } }
+  .tr-code { margin: 0; padding: 10px 0; font-size: .85rem; }
+  .tr-code .ln { display: block; padding: 0 14px 0 0; white-space: pre; }
+  .tr-code .ln i { display: inline-block; width: 30px; text-align: right; margin-right: 12px; color: var(--cm); font-style: normal; opacity: .7; }
+  .tr-code .ln.cur { background: var(--hl); box-shadow: inset 3px 0 0 var(--accent); }
+  .tr-side h4 { margin: 0 0 6px; font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .tr-scope { font-size: .75rem; color: var(--muted); margin: 6px 0 2px; }
+  .tr-note { min-height: 48px; font-size: .92rem; background: var(--surface); border: 1px solid var(--border);
+             border-radius: 10px; padding: 8px 12px; margin: 10px 0; }
+  .tr-out { font-family: ui-monospace, Consolas, monospace; background: var(--code-bg); color: var(--code-text);
+            border-radius: 10px; padding: 8px 12px; min-height: 38px; white-space: pre-wrap; font-size: .85rem; }
+  .tr-ctrl { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+  .tr-ctrl .count { font-size: .85rem; color: var(--muted); margin-left: auto; }
+  #trTable td, #trTable th { padding: 6px 10px; font-family: ui-monospace, Consolas, monospace; font-size: .85rem; }
+  #trTable td.chg { background: var(--changed); font-weight: 700; }
+  #trTable tr.last td { border-bottom: 2px solid var(--accent); }
+
+  /* Checklist */
+  .check { list-style: none; padding: 0; margin: 6px 0 12px; display: grid; gap: 6px; }
+  .check label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; padding: 8px 12px;
+                 border: 1px solid var(--border); border-radius: 10px; }
+  .check input { width: 18px; height: 18px; margin-top: 3px; accent-color: var(--tip); flex: none; }
+  .check input:checked + span { color: var(--muted); text-decoration: line-through; }
+  .progress { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; margin: 4px 0 6px; }
+  .progress div { height: 100%; width: 0; background: var(--tip); transition: width .3s; }
+  .progress-label { font-size: .85rem; color: var(--muted); }
+
+  .next { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 10px; }
+  .next div { border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+  .next b { display: block; font-family: ui-monospace, Consolas, monospace; font-size: .92rem; }
+  .next span { font-size: .88rem; color: var(--muted); }
+  kbd { font-family: ui-monospace, Consolas, monospace; font-size: .82em; border: 1px solid var(--border);
+        border-bottom-width: 2px; border-radius: 5px; padding: 0 5px; background: var(--bg); }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside>
+    <a class="back" href="../general/Curriculum_Map.html">← Curriculum Map</a>
+    <div class="label">Unit 2</div>
+    <ol>
+      <li><a href="#variables">Variables</a></li>
+      <li><a href="#assign">Assignment</a></li>
+      <li><a href="#arith">Arithmetic</a></li>
+      <li><a href="#types">int vs double</a></li>
+      <li><a href="#math">The Math library</a></li>
+      <li><a href="#strings">Text and output</a></li>
+      <li><a href="#input">Input</a></li>
+      <li><a href="#methods">Helper methods</a></li>
+      <li><a href="#trace">Trace tables</a></li>
+      <li><a href="#errors">Three kinds of errors</a></li>
+      <li><a href="#objects">Objects + variables</a></li>
+      <li><a href="#checklist">Checklist</a></li>
+    </ol>
+  </aside>
+
+  <main>
+    <div class="hero">
+      <div class="kicker">Unit 2 · מושגי יסוד בתכנות</div>
+      <h1>Basic Programming Concepts</h1>
+      <p>Store values in <b>variables</b>, calculate with them, read input from the user, and split your code into small <b>helper methods</b>.</p>
+      <div class="pills"><span>⏱ ~30 hours</span><span>☕ Java</span><span>📄 Curriculum v2.63, Chapter 2</span></div>
+    </div>
+
+    <!-- 1 -->
+    <section id="variables">
+      <h2><span class="n">1</span>Variables <small>(משתנים)</small></h2>
+      <p>In Unit 1 every program printed the same thing each time. To work with data, a program needs to <b>remember values</b>. It does that with <b>variables</b>.</p>
+      <p>A <b>variable</b> is a named box in the computer's memory that holds one value.</p>
+      <div class="boxes">
+        <div class="var"><div class="cell">16</div><div class="nm">age</div><div class="tp">int</div></div>
+        <div class="var"><div class="cell">1.72</div><div class="nm">height</div><div class="tp">double</div></div>
+        <div class="var"><div class="cell">3</div><div class="nm">siblings</div><div class="tp">int</div></div>
+      </div>
+      <p>Every variable has three things:</p>
+      <div class="cards">
+        <div class="mini"><div class="ic">🏷️</div><b>A name</b><span>Fixed when you create it. <code>age</code></span></div>
+        <div class="mini"><div class="ic">📐</div><b>A type</b><span>What kind of value it holds. Fixed. <code>int</code></span></div>
+        <div class="mini"><div class="ic">🔄</div><b>A value</b><span>What's inside right now. This one <b>can change</b>, hence "variable".</span></div>
+      </div>
+
+      <h3>Creating a variable</h3>
+<pre><code><span class="ty">int</span> age;                     <span class="cm">// declaration: create a box called age for whole numbers</span>
+age = <span class="num">16</span>;                    <span class="cm">// assignment: put 16 into the box</span>
+
+<span class="ty">double</span> height = <span class="num">1.72</span>;        <span class="cm">// declaration + initialization in one line (most common)</span>
+<span class="ty">int</span> a = <span class="num">3</span>, b = <span class="num">4</span>;            <span class="cm">// several of the same type in one line</span>
+
+<span class="ty">System</span>.out.println(age);     <span class="cm">// prints the VALUE: 16</span>
+<span class="ty">System</span>.out.println(<span class="str">"age"</span>);   <span class="cm">// prints the TEXT:  age</span></code></pre>
+
+      <h3>The two number types in this course</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Type</th><th>Holds</th><th>Examples</th><th>Range</th></tr>
+        <tr><td><code>int</code></td><td>Whole numbers (integers)</td><td><code>0</code>, <code>-7</code>, <code>2026</code></td><td>About ±2.1 billion<br><small>(−2,147,483,648 to 2,147,483,647)</small></td></tr>
+        <tr><td><code>double</code></td><td>Decimal numbers</td><td><code>3.14</code>, <code>-0.5</code>, <code>7.0</code></td><td>Huge (about ±10<sup>308</sup>), but only ~15 accurate digits</td></tr>
+      </table></div>
+      <div class="callout warn"><b>Memory is limited</b>Unlike numbers in math, numbers in a computer have a size limit, because each box has a fixed size in memory. Going past the limit gives strange results: <code>2147483647 + 1</code> is <code>-2147483648</code>! And <code>0.1 + 0.2</code> prints <code>0.30000000000000004</code>, because <code>double</code> can't store every decimal exactly.</div>
+
+      <h3>Naming rules</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Rule</th><th>✅ OK</th><th>❌ Not OK</th></tr>
+        <tr><td>Letters, digits and <code>_</code> only</td><td><code>total_2</code></td><td><code>my-age</code>, <code>my age</code></td></tr>
+        <tr><td>Can't start with a digit</td><td><code>price2</code></td><td><code>2price</code></td></tr>
+        <tr><td>Can't be a Java word</td><td><code>myClass</code></td><td><code>int</code>, <code>class</code>, <code>new</code></td></tr>
+        <tr><td><b>Convention:</b> camelCase, meaningful</td><td><code>numOfStudents</code></td><td><code>x1</code>, <code>NUMOFSTUDENTS</code></td></tr>
+      </table></div>
+      <div class="callout tip"><b>Good names are documentation</b><code>double avg = sum / count;</code> explains itself. <code>double q = w / z;</code> doesn't.</div>
+    </section>
+
+    <!-- 2 -->
+    <section id="assign">
+      <h2><span class="n">2</span>Assignment <small>(השמה)</small></h2>
+      <p>The <code>=</code> sign in Java is <b>not</b> "equals" like in math. It's a command: <b>"calculate the right side, then put the result in the box on the left."</b></p>
+<pre><code><span class="ty">int</span> x = <span class="num">5</span>;
+x = x + <span class="num">1</span>;   <span class="cm">// right side: 5 + 1 = 6. Put 6 into x. (In math this would be nonsense!)</span>
+x = x * <span class="num">2</span>;   <span class="cm">// x is now 12</span></code></pre>
+
+      <h3>Assignment <b>copies</b>, it doesn't move</h3>
+<pre><code><span class="ty">int</span> a = <span class="num">7</span>;
+<span class="ty">int</span> b = a;   <span class="cm">// b gets a COPY of 7. a still holds 7.</span>
+a = <span class="num">100</span>;     <span class="cm">// changing a later does NOT change b</span></code></pre>
+      <div class="boxes">
+        <div class="var"><div class="cell">100</div><div class="nm">a</div><div class="tp">int</div></div>
+        <div class="var"><div class="cell">7</div><div class="nm">b</div><div class="tp">int</div></div>
+      </div>
+      <div class="callout warn"><b>Not like the buckets!</b>In Unit 1, <code>pourInto</code> <i>moved</i> water: one bucket lost what the other gained. Assignment is different: it's like <b>photocopying</b> a note. The original stays exactly as it was.</div>
+
+      <h3>Classic task: swapping two variables</h3>
+      <p>To swap the values of <code>a</code> and <code>b</code>, you need a third, temporary box. Otherwise one value is overwritten and lost:</p>
+<pre><code><span class="ty">int</span> temp = a;   <span class="cm">// save a's value</span>
+a = b;          <span class="cm">// now a can be overwritten</span>
+b = temp;       <span class="cm">// put the saved value into b</span></code></pre>
+      <p>Watch this step by step in the <a href="#trace">trace table simulator</a> (program "Swap").</p>
+
+      <h3>Shortcuts you'll see a lot</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Shortcut</th><th>Means</th></tr>
+        <tr><td><code>x += 5;</code></td><td><code>x = x + 5;</code> (also <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>)</td></tr>
+        <tr><td><code>x++;</code></td><td><code>x = x + 1;</code></td></tr>
+        <tr><td><code>x--;</code></td><td><code>x = x - 1;</code></td></tr>
+      </table></div>
+      <div class="callout warn"><b>Use before giving a value = error</b><code>int n; System.out.println(n);</code> doesn't compile: <i>"variable n might not have been initialized"</i>. A box must get a value before you read it.</div>
+    </section>
+
+    <!-- 3 -->
+    <section id="arith">
+      <h2><span class="n">3</span>Arithmetic Expressions <small>(ביטויים חשבוניים)</small></h2>
+      <p>An <b>expression</b> is anything that has a value: <code>7</code>, <code>x</code>, <code>x + 1</code>, <code>(a + b) / 2</code>. Java calculates (<i>evaluates</i>) it to get one value.</p>
+      <div class="table-wrap"><table>
+        <tr><th>Operator</th><th>Meaning</th><th>Example</th><th>Value</th></tr>
+        <tr><td><code>+</code></td><td>Addition</td><td><code>7 + 2</code></td><td><code>9</code></td></tr>
+        <tr><td><code>-</code></td><td>Subtraction</td><td><code>7 - 2</code></td><td><code>5</code></td></tr>
+        <tr><td><code>*</code></td><td>Multiplication</td><td><code>7 * 2</code></td><td><code>14</code></td></tr>
+        <tr><td><code>/</code></td><td>Division</td><td><code>7 / 2</code></td><td><code>3</code> ⚠️ (see below)</td></tr>
+        <tr><td><code>%</code></td><td>Remainder (modulo)</td><td><code>7 % 2</code></td><td><code>1</code></td></tr>
+      </table></div>
+
+      <h3>Order of operations</h3>
+      <p>Same as in math: first <b>parentheses</b>, then <code>*</code> <code>/</code> <code>%</code>, then <code>+</code> <code>-</code>. Operators at the same level go <b>left to right</b>.</p>
+<pre><code><span class="num">2</span> + <span class="num">3</span> * <span class="num">4</span>     <span class="cm">// 14   (3*4 first)</span>
+(<span class="num">2</span> + <span class="num">3</span>) * <span class="num">4</span>   <span class="cm">// 20</span>
+<span class="num">20</span> / <span class="num">4</span> * <span class="num">2</span>    <span class="cm">// 10   (left to right: 5 * 2)</span>
+<span class="num">10</span> - <span class="num">4</span> - <span class="num">3</span>    <span class="cm">// 3    (left to right: 6 - 3)</span></code></pre>
+      <div class="callout warn"><b>Classic bug: the average</b><code>(a + b) / 2</code> is the average. <code>a + b / 2</code> is <code>a + (b / 2)</code>, which is wrong. When in doubt, add parentheses.</div>
+
+      <h3>Integer division: quotient and remainder</h3>
+      <p>When <b>both</b> sides are <code>int</code>, <code>/</code> gives a whole-number answer and throws away the rest. <code>%</code> gives what's left over. Think of sharing sweets:</p>
+      <div class="cards">
+        <div class="mini"><div class="ic">🍬</div><b>17 sweets, 5 kids</b><span><code>17 / 5</code> = <b>3</b> each<br><code>17 % 5</code> = <b>2</b> left over</span></div>
+        <div class="mini"><div class="ic">⏰</div><b>135 minutes</b><span><code>135 / 60</code> = <b>2</b> hours<br><code>135 % 60</code> = <b>15</b> minutes</span></div>
+        <div class="mini"><div class="ic">🔢</div><b>The digits of 472</b><span><code>472 % 10</code> = <b>2</b> (units)<br><code>472 / 10 % 10</code> = <b>7</b> (tens)<br><code>472 / 100</code> = <b>4</b> (hundreds)</span></div>
+      </div>
+      <div class="callout tip"><b>Useful <code>%</code> patterns</b><code>n % 2</code> is 0 for even numbers and 1 for odd ones. <code>n % 10</code> is the last digit. <code>n / 10</code> removes the last digit.</div>
+
+      <h3>Quick quiz: click a card to see the value</h3>
+      <div class="quiz" id="quiz1">
+        <button><code>9 / 2</code><span class="ans" data-a="4">?</span></button>
+        <button><code>9 % 2</code><span class="ans" data-a="1">?</span></button>
+        <button><code>2 / 9</code><span class="ans" data-a="0">?</span></button>
+        <button><code>2 % 9</code><span class="ans" data-a="2">?</span></button>
+        <button><code>8 - 3 * 2</code><span class="ans" data-a="2">?</span></button>
+        <button><code>(8 - 3) * 2</code><span class="ans" data-a="10">?</span></button>
+        <button><code>100 / 10 / 5</code><span class="ans" data-a="2">?</span></button>
+        <button><code>365 % 7</code><span class="ans" data-a="1">?</span></button>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section id="types">
+      <h2><span class="n">4</span><span><code>int</code> vs <code>double</code>: Converting Types <small>(המרה)</small></span></h2>
+      <p>The type of the <b>result</b> depends on the types of the values:</p>
+      <div class="table-wrap"><table>
+        <tr><th>Expression</th><th>Types</th><th>Result</th></tr>
+        <tr><td><code>7 / 2</code></td><td>int / int</td><td><code>3</code> (int)</td></tr>
+        <tr><td><code>7.0 / 2</code></td><td>double / int</td><td><code>3.5</code> (double)</td></tr>
+        <tr><td><code>7 / 2.0</code></td><td>int / double</td><td><code>3.5</code> (double)</td></tr>
+        <tr><td><code>3 + 1.5</code></td><td>int + double</td><td><code>4.5</code> (double)</td></tr>
+      </table></div>
+      <p><b>Rule:</b> if at least one side is a <code>double</code>, Java first converts the <code>int</code> to a <code>double</code> automatically, and the result is a <code>double</code>.</p>
+
+      <h3>Automatic conversion: int → double ✅</h3>
+<pre><code><span class="ty">double</span> d = <span class="num">5</span>;   <span class="cm">// OK: 5 becomes 5.0. No information is lost.</span>
+<span class="ty">int</span> n = <span class="num">5.7</span>;    <span class="cm">// ❌ ERROR: "possible lossy conversion from double to int"</span></code></pre>
+      <p>Java refuses to squeeze a <code>double</code> into an <code>int</code> by itself, because the decimal part would be lost. If you really want that, you must say so with a <b>cast</b>.</p>
+
+      <h3>Casting: converting on purpose</h3>
+<pre><code><span class="ty">int</span> n = (<span class="ty">int</span>) <span class="num">5.7</span>;                       <span class="cm">// 5  (cuts off the decimals, does NOT round!)</span>
+<span class="ty">int</span> total = <span class="num">17</span>, count = <span class="num">4</span>;
+<span class="ty">double</span> wrong = total / count;            <span class="cm">// 4.0  ← int division happened first!</span>
+<span class="ty">double</span> right = (<span class="ty">double</span>) total / count;   <span class="cm">// 4.25 ← total becomes 17.0 first</span></code></pre>
+      <div class="callout warn"><b>The most common bug of this unit</b><code>double avg = total / count;</code> looks right but gives a whole number, because <code>total / count</code> is calculated as <code>int / int</code> <i>before</i> it goes into the <code>double</code> box. Fix it with <code>(double) total / count</code> or <code>total / (double) count</code> or <code>1.0 * total / count</code>.</div>
+    </section>
+
+    <!-- 5 -->
+    <section id="math">
+      <h2><span class="n">5</span><span>The <code>Math</code> Library</span></h2>
+      <p>Java comes with a class called <code>Math</code>: a <b>library</b> of ready-made math actions written by other programmers. You call them with the pattern <code>ClassName.methodName(values)</code>:</p>
+      <div class="table-wrap"><table>
+        <tr><th>Call</th><th>What it does</th><th>Example</th><th>Value</th></tr>
+        <tr><td><code>Math.abs(x)</code></td><td>Absolute value</td><td><code>Math.abs(-7)</code></td><td><code>7</code></td></tr>
+        <tr><td><code>Math.max(a, b)</code></td><td>The larger of two</td><td><code>Math.max(3, 9)</code></td><td><code>9</code></td></tr>
+        <tr><td><code>Math.min(a, b)</code></td><td>The smaller of two</td><td><code>Math.min(3, 9)</code></td><td><code>3</code></td></tr>
+        <tr><td><code>Math.pow(a, b)</code></td><td><i>a</i> to the power of <i>b</i></td><td><code>Math.pow(2, 10)</code></td><td><code>1024.0</code> (double)</td></tr>
+        <tr><td><code>Math.sqrt(x)</code></td><td>Square root</td><td><code>Math.sqrt(25)</code></td><td><code>5.0</code> (double)</td></tr>
+        <tr><td><code>Math.round(x)</code></td><td>Round to the nearest whole number</td><td><code>Math.round(2.5)</code></td><td><code>3</code></td></tr>
+        <tr><td><code>Math.random()</code></td><td>A random decimal from 0.0 up to (not including) 1.0</td><td><code>Math.random()</code></td><td>e.g. <code>0.7184…</code></td></tr>
+        <tr><td><code>Math.PI</code></td><td>The number π (a value, not an action: no parentheses)</td><td><code>Math.PI</code></td><td><code>3.14159…</code></td></tr>
+      </table></div>
+<pre><code><span class="ty">double</span> hyp = <span class="ty">Math</span>.sqrt(<span class="ty">Math</span>.pow(<span class="num">3</span>, <span class="num">2</span>) + <span class="ty">Math</span>.pow(<span class="num">4</span>, <span class="num">2</span>));   <span class="cm">// 5.0  (Pythagoras)</span>
+<span class="ty">int</span> biggest = <span class="ty">Math</span>.max(a, <span class="ty">Math</span>.max(b, c));                 <span class="cm">// largest of three: calls inside calls</span>
+<span class="ty">int</span> grade = (<span class="ty">int</span>) <span class="ty">Math</span>.round(<span class="num">84.6</span>);                        <span class="cm">// 85</span>
+<span class="ty">double</span> twoPlaces = <span class="ty">Math</span>.round(<span class="num">3.14159</span> * <span class="num">100</span>) / <span class="num">100.0</span>;      <span class="cm">// 3.14</span></code></pre>
+      <div class="callout warn"><b><code>Math.round</code> needs a cast to fit in an <code>int</code></b>For a <code>double</code>, <code>Math.round</code> returns a very large whole-number type (<code>long</code>). Write <code>int r = (int) Math.round(x);</code></div>
+
+      <h3>Random whole numbers</h3>
+      <p><code>Math.random()</code> gives a decimal in [0, 1). To get a whole number from 1 to 6 (a die):</p>
+<pre><code><span class="ty">int</span> die = (<span class="ty">int</span>) (<span class="ty">Math</span>.random() * <span class="num">6</span>) + <span class="num">1</span>;</code></pre>
+      <div class="flow-steps">
+        <ol class="steps">
+          <li><code>Math.random()</code> → somewhere in <b>[0, 1)</b>, e.g. 0.73</li>
+          <li><code>* 6</code> → somewhere in <b>[0, 6)</b>, e.g. 4.38</li>
+          <li><code>(int)</code> cuts the decimals → <b>0, 1, 2, 3, 4 or 5</b>, e.g. 4</li>
+          <li><code>+ 1</code> → <b>1 to 6</b>, e.g. 5</li>
+        </ol>
+      </div>
+      <div class="callout tip"><b>General formula</b>A random whole number from <code>low</code> to <code>high</code>: <code>(int) (Math.random() * (high - low + 1)) + low</code></div>
+    </section>
+
+    <!-- 6 -->
+    <section id="strings">
+      <h2><span class="n">6</span><span>Text and Output: <code>String</code></span></h2>
+      <p>Text in Java has the type <code>String</code>. For now you only need two things: storing text in a variable, and gluing pieces together with <code>+</code> (<b>concatenation</b>, שרשור).</p>
+<pre><code><span class="ty">String</span> name = <span class="str">"Dana"</span>;
+<span class="ty">int</span> age = <span class="num">16</span>;
+<span class="ty">System</span>.out.println(<span class="str">"Hi "</span> + name + <span class="str">", you are "</span> + age + <span class="str">"."</span>);   <span class="cm">// Hi Dana, you are 16.</span></code></pre>
+      <p>When one side of <code>+</code> is a <code>String</code>, the other side is turned into text and glued on.</p>
+
+      <h3>Watch the order!</h3>
+      <p><code>+</code> works left to right. Once the result is text, every following <code>+</code> glues text:</p>
+      <div class="table-wrap"><table>
+        <tr><th>Code</th><th>Prints</th><th>Why</th></tr>
+        <tr><td><code>"Sum: " + 3 + 4</code></td><td><code>Sum: 34</code></td><td><code>"Sum: 3"</code> then <code>+ 4</code> glues "4"</td></tr>
+        <tr><td><code>"Sum: " + (3 + 4)</code></td><td><code>Sum: 7</code></td><td>Parentheses first: 3 + 4 = 7</td></tr>
+        <tr><td><code>3 + 4 + " is the sum"</code></td><td><code>7 is the sum</code></td><td>3 + 4 = 7 first, then text</td></tr>
+      </table></div>
+      <div class="callout tip"><b>Rule of thumb</b>Put any calculation inside a <code>println</code> in <b>parentheses</b>: <code>"Total: " + (price * amount)</code>.</div>
+    </section>
+
+    <!-- 7 -->
+    <section id="input">
+      <h2><span class="n">7</span>Input: Reading from the Keyboard <small>(קלט)</small></h2>
+      <p>To let the user type values, we use a ready-made class called <code>Scanner</code>. For now, treat it as a <b>black box</b>: copy the pattern, and use it.</p>
+<pre><code><span class="kw">import</span> java.util.<span class="ty">Scanner</span>;                        <span class="cm">// ① first line of the file: "I'll use Scanner"</span>
+
+<span class="kw">public class</span> <span class="ty">Greeting</span> {
+    <span class="kw">public static void</span> main(<span class="ty">String</span>[] args) {
+        <span class="ty">Scanner</span> in = <span class="kw">new</span> <span class="ty">Scanner</span>(<span class="ty">System</span>.in);     <span class="cm">// ② create a Scanner object, once</span>
+
+        <span class="ty">System</span>.out.print(<span class="str">"How old are you? "</span>);   <span class="cm">// ③ always tell the user what to type</span>
+        <span class="ty">int</span> age = in.nextInt();                  <span class="cm">// ④ wait for a whole number</span>
+
+        <span class="ty">System</span>.out.print(<span class="str">"Your height in meters? "</span>);
+        <span class="ty">double</span> height = in.nextDouble();         <span class="cm">// ④ wait for a decimal number</span>
+
+        <span class="ty">System</span>.out.println(<span class="str">"In 10 years you will be "</span> + (age + <span class="num">10</span>) + <span class="str">"."</span>);
+    }
+}</code></pre>
+      <div class="table-wrap"><table>
+        <tr><th>Call</th><th>Reads</th></tr>
+        <tr><td><code>in.nextInt()</code></td><td>A whole number → <code>int</code></td></tr>
+        <tr><td><code>in.nextDouble()</code></td><td>A decimal number → <code>double</code></td></tr>
+        <tr><td><code>in.next()</code></td><td>One word → <code>String</code></td></tr>
+      </table></div>
+      <div class="callout tip"><b>You already know this pattern!</b><code>new Scanner(...)</code> creates an <b>object</b>, just like <code>new Bucket(5)</code>. And <code>in.nextInt()</code> calls a method on it, just like <code>big.fill()</code>.</div>
+      <div class="callout warn"><b>In IntelliJ</b>When the program waits for input, click inside the <b>Run</b> window at the bottom, type the value, and press <kbd>Enter</kbd>. If you type <code>abc</code> when a number is expected, the program crashes with <code>InputMismatchException</code>.</div>
+    </section>
+
+    <!-- 8 -->
+    <section id="methods">
+      <h2><span class="n">8</span>Helper Methods <small>(פעולות עזר)</small></h2>
+      <p>You've already <i>used</i> methods that others wrote: <code>Math.sqrt</code>, <code>big.fill()</code>, <code>in.nextInt()</code>. Now you'll <b>write your own</b>. A method is a named piece of code that does one task. You write it once and call it whenever you need it.</p>
+      <div class="cards">
+        <div class="mini"><div class="ic">🧩</div><b>Split a big task</b><span>Each method solves one small part (refinement, עידון)</span></div>
+        <div class="mini"><div class="ic">♻️</div><b>Reuse</b><span>Write once, call many times</span></div>
+        <div class="mini"><div class="ic">🔍</div><b>Read &amp; test</b><span>Small pieces are easier to understand and check</span></div>
+      </div>
+
+<pre><code><span class="kw">public class</span> <span class="ty">Circles</span> {
+    <span class="kw">public static void</span> main(<span class="ty">String</span>[] args) {
+        <span class="ty">double</span> a = circleArea(<span class="num">2.5</span>);              <span class="cm">// call: 2.5 goes into radius, the result comes back</span>
+        <span class="ty">System</span>.out.println(<span class="str">"Area: "</span> + a);
+        printLine();                             <span class="cm">// call a method that returns nothing</span>
+        <span class="ty">System</span>.out.println(circleArea(<span class="num">1</span>) * <span class="num">2</span>);   <span class="cm">// the returned value can be used inside an expression</span>
+    }
+
+    <span class="cm">// Returns the area of a circle with the given radius.</span>
+    <span class="kw">private static double</span> circleArea(<span class="ty">double</span> radius) {
+        <span class="kw">return</span> <span class="ty">Math</span>.PI * radius * radius;
+    }
+
+    <span class="cm">// Prints a separator line. Returns nothing (void).</span>
+    <span class="kw">private static void</span> printLine() {
+        <span class="ty">System</span>.out.println(<span class="str">"--------------------"</span>);
+    }
+}</code></pre>
+
+      <h3>Anatomy of a method</h3>
+      <div class="table-wrap"><table>
+        <tr><th>Part</th><th>In the example</th><th>Meaning</th></tr>
+        <tr><td>Opening</td><td><code>private static</code></td><td>A fixed opening for now. You'll learn what it means later.</td></tr>
+        <tr><td>Return type</td><td><code>double</code></td><td>The type of the value the method gives back. <code>void</code> = gives nothing back.</td></tr>
+        <tr><td>Name</td><td><code>circleArea</code></td><td>A verb or a description of what it returns, in camelCase</td></tr>
+        <tr><td>Parameters</td><td><code>(double radius)</code></td><td>The values the method needs, each with a type. Can be empty: <code>()</code></td></tr>
+        <tr><td>Body</td><td><code>{ ... }</code></td><td>The commands that run on each call</td></tr>
+        <tr><td><code>return</code></td><td><code>return Math.PI * ...;</code></td><td>Ends the method and sends the value back to where it was called</td></tr>
+      </table></div>
+      <p>The <b>signature</b> (חתימה) is the first line: return type, name, and parameters. It tells you how to call the method without reading its body.</p>
+
+      <h3>What happens during a call</h3>
+      <ol class="steps">
+        <li>Java calculates the value in the parentheses: <code>circleArea(r * 2)</code> with <code>r = 1.5</code> → <code>3.0</code>.</li>
+        <li>The value is <b>copied</b> into the parameter: <code>radius = 3.0</code>.</li>
+        <li>The body runs until <code>return</code>.</li>
+        <li>The returned value <b>replaces the call</b> in the expression: <code>double a = 28.27…;</code></li>
+      </ol>
+      <div class="callout tip"><b>Call by value (העברה לפי ערך)</b>A parameter is a <b>copy</b> of the value you pass. If the method changes its parameter, the caller's variable stays the same. Try it in the <a href="#trace">trace simulator</a> (program "Method call").</div>
+      <div class="callout warn"><b>Types must match</b>A <code>double</code> parameter accepts any expression whose value is a number: <code>circleArea(5)</code>, <code>circleArea(x + 1)</code>, <code>circleArea(Math.sqrt(2))</code>. But an <code>int</code> parameter won't accept <code>2.5</code>. Also, a non-<code>void</code> method must always reach a <code>return</code>.</div>
+
+      <h3>Refinement: splitting a task into methods</h3>
+      <p>Task: <i>"Read the number of guests. Each eats 3 slices, a pizza has 8 slices and costs ₪45. Print how many pizzas to order and the total cost."</i></p>
+<pre><code><span class="cm">// main tells the story; each helper does one small job</span>
+<span class="ty">int</span> guests = in.nextInt();
+<span class="ty">int</span> pizzas = pizzasNeeded(guests * <span class="num">3</span>);
+<span class="ty">System</span>.out.println(<span class="str">"Order "</span> + pizzas + <span class="str">" pizzas, cost: "</span> + cost(pizzas));
+
+<span class="kw">private static int</span> pizzasNeeded(<span class="ty">int</span> slices) { <span class="kw">return</span> (slices + <span class="num">7</span>) / <span class="num">8</span>; }   <span class="cm">// round UP without if</span>
+<span class="kw">private static int</span> cost(<span class="ty">int</span> pizzas)        { <span class="kw">return</span> pizzas * <span class="num">45</span>; }</code></pre>
+    </section>
+
+    <!-- 9 -->
+    <section id="trace">
+      <h2><span class="n">9</span>Trace Tables <small>(טבלת מעקב)</small></h2>
+      <p>A <b>trace table</b> lets you run a program <b>by hand</b>, line by line, to see what it does and find bugs. It has one column per variable and one for the output. Every row is one step.</p>
+      <ol class="steps">
+        <li>Make a column for the line number, one per variable, and one for the output.</li>
+        <li>Go through the code in the order it runs. For each line that changes something, add a row.</li>
+        <li>Write each new value. Leave a cell empty if the variable doesn't exist yet.</li>
+      </ol>
+      <div class="callout tip"><b>Exams love trace tables</b>In the Bagrut, many questions are "what does this code print?". The trace table is how you answer them without mistakes.</div>
+
+      <h3>🧪 Trace simulator</h3>
+      <p>Pick a program. Before each click on <b>Next</b>, predict what will change.</p>
+      <div class="tracer">
+        <div class="tr-tabs" id="trTabs"></div>
+        <div class="tr-grid">
+          <pre class="tr-code" id="trCode"></pre>
+          <div class="tr-side">
+            <h4>Memory</h4>
+            <div id="trMem"></div>
+            <h4 style="margin-top:12px">Output</h4>
+            <div class="tr-out" id="trOut"></div>
+          </div>
+        </div>
+        <div class="tr-note" id="trNote"></div>
+        <div class="table-wrap" style="margin-bottom:0"><table id="trTable"></table></div>
+        <div class="tr-ctrl">
+          <button id="trBack">◀ Back</button>
+          <button id="trNext" class="primary">Next ▶</button>
+          <button id="trReset">Reset</button>
+          <span class="count" id="trCount"></span>
+        </div>
+      </div>
+      <div class="callout tip"><b>IntelliJ does this for you, too</b>Set a breakpoint, press 🐞 <b>Debug</b>, and step with <kbd>F8</kbd>. The <b>Variables</b> panel shows every box and its current value. To follow a call into a method, use <kbd>F7</kbd> (<i>Step Into</i>).</div>
+    </section>
+
+    <!-- 10 -->
+    <section id="errors">
+      <h2><span class="n">10</span>Three Kinds of Errors</h2>
+      <div class="table-wrap"><table>
+        <tr><th>Kind</th><th>When you find out</th><th>Examples</th></tr>
+        <tr><td>🟥 <b>Syntax</b> (compile) error<br><small>שגיאת תחביר</small></td><td>Before running. IntelliJ underlines it in red and the program won't start.</td><td>Missing <code>;</code><br><code>int n = 2.5;</code> (wrong type)<br>Using a variable that was never declared</td></tr>
+        <tr><td>💥 <b>Runtime</b> error<br><small>שגיאת זמן ריצה</small></td><td>While running. The program crashes with a red message (an <i>exception</i>).</td><td><code>10 / 0</code> → <code>ArithmeticException: / by zero</code><br>Typing <code>abc</code> into <code>nextInt()</code> → <code>InputMismatchException</code></td></tr>
+        <tr><td>🐛 <b>Logic</b> error<br><small>שגיאה לוגית</small></td><td>Never automatically! The program runs but the answer is wrong. Only <b>testing</b> finds it.</td><td><code>a + b / 2</code> instead of <code>(a + b) / 2</code><br><code>total / count</code> giving 4.0 instead of 4.25</td></tr>
+      </table></div>
+      <div class="callout tip"><b>How to test</b>Before running, work out the expected answer by hand for a few inputs. Choose inputs that are easy to check, and some tricky ones: 0, negative numbers, odd numbers for division.</div>
+      <div class="callout warn"><b>Division by zero with <code>double</code></b>Only <code>int</code> division by zero crashes. <code>5.0 / 0</code> gives <code>Infinity</code>, which is still a logic error.</div>
+    </section>
+
+    <!-- 11 -->
+    <section id="objects">
+      <h2><span class="n">11</span>Objects + Variables</h2>
+      <p>Now that you have variables, you can <b>store</b> the values an object gives back, and <b>calculate</b> with them. The <code>Bucket</code> class from Unit 1 still works the same way:</p>
+<pre><code><span class="cm">// use the Bucket class from the unit1 folder</span>
+<span class="kw">import</span> unit1.<span class="ty">Bucket</span>;
+...
+<span class="ty">Bucket</span> big = <span class="kw">new</span> <span class="ty">Bucket</span>(<span class="num">7</span>);
+<span class="ty">Bucket</span> small = <span class="kw">new</span> <span class="ty">Bucket</span>(<span class="num">3</span>);
+big.fill();
+big.pourInto(small);
+
+<span class="ty">int</span> left = big.getCurrentAmount();                                <span class="cm">// 4: store the returned value</span>
+<span class="ty">double</span> percent = <span class="num">100.0</span> * left / big.getCapacity();                <span class="cm">// 57.14…: calculate with it</span>
+<span class="ty">System</span>.out.println(<span class="str">"big is "</span> + <span class="ty">Math</span>.round(percent) + <span class="str">"% full"</span>);   <span class="cm">// big is 57% full</span></code></pre>
+      <div class="table-wrap"><table>
+        <tr><th>Kind of class</th><th>Example</th><th>How you use it</th></tr>
+        <tr><td>Class you create objects from</td><td><code>Bucket</code>, <code>Scanner</code></td><td><code>new</code> first, then <code>object.method()</code></td></tr>
+        <tr><td>Library class</td><td><code>Math</code></td><td>No <code>new</code>: <code>ClassName.method()</code></td></tr>
+      </table></div>
+      <div class="callout tip"><b>Tracing objects</b>In a trace table, a variable that holds an object gets a column too. Write the object's state in it, e.g. <code>big: 4/7</code>.</div>
+    </section>
+
+    <!-- 12 -->
+    <section id="checklist">
+      <h2><span class="n">12</span>Checklist</h2>
+      <p>By the end of Unit 2 you can…</p>
+      <div class="progress"><div id="bar"></div></div>
+      <div class="progress-label" id="barLabel"></div>
+      <ul class="check" id="checks">
+        <li><label><input type="checkbox"><span>Choose suitable types (<code>int</code> / <code>double</code>) and names for the variables a task needs</span></label></li>
+        <li><label><input type="checkbox"><span>Explain why <code>int</code> and <code>double</code> both exist, and what their limits are</span></label></li>
+        <li><label><input type="checkbox"><span>Write assignments, and explain that assignment copies a value</span></label></li>
+        <li><label><input type="checkbox"><span>Calculate the value of an expression by hand, including <code>/</code>, <code>%</code> and order of operations</span></label></li>
+        <li><label><input type="checkbox"><span>Turn a word problem into a correct Java expression</span></label></li>
+        <li><label><input type="checkbox"><span>Avoid the int-division trap with a cast</span></label></li>
+        <li><label><input type="checkbox"><span>Use <code>Math.abs</code>, <code>max</code>, <code>min</code>, <code>pow</code>, <code>sqrt</code>, <code>round</code> and <code>random</code></span></label></li>
+        <li><label><input type="checkbox"><span>Read input with <code>Scanner</code> and print results with <code>+</code></span></label></li>
+        <li><label><input type="checkbox"><span>Write helper methods with parameters and a return value, and split a long program into them</span></label></li>
+        <li><label><input type="checkbox"><span>Explain "call by value"</span></label></li>
+        <li><label><input type="checkbox"><span>Fill in a trace table, and predict a program's output</span></label></li>
+        <li><label><input type="checkbox"><span>Tell syntax, runtime and logic errors apart</span></label></li>
+      </ul>
+
+      <h3>What's next</h3>
+      <div class="next">
+        <div><b>Examples.java</b><span>13 examples. The last one asks you to type input.</span></div>
+        <div><b>Homework.java</b><span>13 exercises: tracing, calculators, methods</span></div>
+        <div><b>Playground.java</b><span>Free space to experiment</span></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  // ----- Quiz cards -----
+  document.querySelectorAll(".quiz button").forEach(b => b.addEventListener("click", () => {
+    const a = b.querySelector(".ans");
+    const shown = b.classList.toggle("shown");
+    a.textContent = shown ? "= " + a.dataset.a : "?";
+  }));
+
+  // ----- Trace simulator -----
+  // Each step: line (1-based), set {var: value}, drop [vars that disappear], out (printed text), note.
+  const PROGRAMS = [
+    {
+      title: "Swap",
+      code: [
+        "int a = 5;",
+        "int b = 8;",
+        "int temp = a;",
+        "a = b;",
+        "b = temp;",
+        "System.out.println(a + \" \" + b);"
+      ],
+      vars: [["a", "int", "main"], ["b", "int", "main"], ["temp", "int", "main"]],
+      steps: [
+        { line: 1, set: { a: 5 }, note: "A box named <b>a</b> is created and gets 5." },
+        { line: 2, set: { b: 8 }, note: "A box named <b>b</b> gets 8." },
+        { line: 3, set: { temp: 5 }, note: "<b>temp</b> gets a <b>copy</b> of a's value. a still holds 5." },
+        { line: 4, set: { a: 8 }, note: "a gets a copy of b's value. The old 5 in a is gone, but it's safe in temp." },
+        { line: 5, set: { b: 5 }, note: "b gets the saved value from temp. The swap is done." },
+        { line: 6, out: "8 5", note: "Prints a, a space, then b." }
+      ]
+    },
+    {
+      title: "Digits",
+      code: [
+        "int num = 472;",
+        "int units = num % 10;",
+        "int tens = num / 10 % 10;",
+        "int hundreds = num / 100;",
+        "int sum = units + tens + hundreds;",
+        "System.out.println(\"Sum: \" + sum);"
+      ],
+      vars: [["num", "int", "main"], ["units", "int", "main"], ["tens", "int", "main"], ["hundreds", "int", "main"], ["sum", "int", "main"]],
+      steps: [
+        { line: 1, set: { num: 472 }, note: "num gets 472." },
+        { line: 2, set: { units: 2 }, note: "472 % 10: 472 = 47×10 + <b>2</b>. The remainder is the last digit." },
+        { line: 3, set: { tens: 7 }, note: "Left to right: 472 / 10 = 47 (int division), then 47 % 10 = <b>7</b>." },
+        { line: 4, set: { hundreds: 4 }, note: "472 / 100 = 4 (the .72 is thrown away)." },
+        { line: 5, set: { sum: 13 }, note: "2 + 7 + 4 = 13." },
+        { line: 6, out: "Sum: 13", note: "\"Sum: \" + 13 glues the number onto the text." }
+      ]
+    },
+    {
+      title: "int vs double",
+      code: [
+        "int total = 17;",
+        "int count = 4;",
+        "double avg1 = total / count;",
+        "double avg2 = (double) total / count;",
+        "int rounded = (int) Math.round(avg2);",
+        "System.out.println(avg1 + \" \" + avg2 + \" \" + rounded);"
+      ],
+      vars: [["total", "int", "main"], ["count", "int", "main"], ["avg1", "double", "main"], ["avg2", "double", "main"], ["rounded", "int", "main"]],
+      steps: [
+        { line: 1, set: { total: 17 }, note: "total gets 17." },
+        { line: 2, set: { count: 4 }, note: "count gets 4." },
+        { line: 3, set: { avg1: "4.0" }, note: "⚠️ 17 / 4 is <b>int / int</b> = 4. Only then is it put in a double box: 4.0. The .25 is already lost!" },
+        { line: 4, set: { avg2: "4.25" }, note: "The cast turns 17 into 17.0 first, so it's double / int = 4.25. ✅" },
+        { line: 5, set: { rounded: 4 }, note: "Math.round(4.25) = 4. The (int) cast lets it fit in an int box." },
+        { line: 6, out: "4.0 4.25 4", note: "A double always prints with a decimal point, even 4.0." }
+      ]
+    },
+    {
+      title: "Method call",
+      code: [
+        "public static void main(String[] args) {",
+        "    int x = 3;",
+        "    int y = square(x);",
+        "    System.out.println(x + \" \" + y);",
+        "}",
+        "",
+        "private static int square(int n) {",
+        "    n = n * n;",
+        "    return n;",
+        "}"
+      ],
+      vars: [["x", "int", "main"], ["y", "int", "main"], ["n", "int", "square"]],
+      steps: [
+        { line: 2, set: { x: 3 }, note: "x gets 3." },
+        { line: 7, set: { n: 3 }, note: "Calling <b>square(x)</b>: the <b>value</b> 3 is copied into the parameter n. n is a separate box that belongs to square." },
+        { line: 8, set: { n: 9 }, note: "n becomes 9. Only n changes: <b>x is still 3</b>. That's call by value." },
+        { line: 9, note: "return n: the value 9 is sent back to the place where square was called." },
+        { line: 3, set: { y: 9 }, drop: ["n"], note: "The call is replaced by 9, so y gets 9. The method is done, and its box n disappears." },
+        { line: 4, out: "3 9", note: "x was never changed by the method." }
+      ]
+    }
+  ];
+
+  const esc = s => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  function highlight(line) {
+    const re = /("(?:[^"\\]|\\.)*")|(\/\/.*$)|\b(int|double|static|private|public|void|return|new)\b|\b(\d+(?:\.\d+)?)\b|\b(System|Math|String|Scanner)\b/g;
+    let out = "", last = 0, m;
+    while ((m = re.exec(line))) {
+      out += esc(line.slice(last, m.index));
+      const cls = m[1] ? "str" : m[2] ? "cm" : m[3] ? "kw" : m[4] ? "num" : "ty";
+      out += '<span class="' + cls + '">' + esc(m[0]) + "</span>";
+      last = re.lastIndex;
+    }
+    return out + esc(line.slice(last));
+  }
+
+  const el = id => document.getElementById(id);
+  let prog = 0, pos = 0;   // pos = number of steps already done
+
+  // Replays the first `pos` steps and returns the resulting state.
+  function stateAt(p, n) {
+    const vals = {}, alive = new Set(), rows = [];
+    let out = "";
+    for (let i = 0; i < n; i++) {
+      const s = p.steps[i];
+      (s.drop || []).forEach(v => alive.delete(v));
+      const changed = Object.keys(s.set || {});
+      changed.forEach(v => { vals[v] = s.set[v]; alive.add(v); });
+      if (s.out !== undefined) out += s.out + "\n";
+      rows.push({ line: s.line, vals: Object.fromEntries([...alive].map(v => [v, vals[v]])), changed, out: s.out || "" });
+    }
+    return { vals, alive, rows, out };
+  }
+
+  function renderTracer() {
+    const p = PROGRAMS[prog];
+    const st = stateAt(p, pos);
+    const step = pos > 0 ? p.steps[pos - 1] : null;
+
+    el("trCode").innerHTML = p.code.map((c, i) =>
+      '<span class="ln' + (step && step.line === i + 1 ? " cur" : "") + '"><i>' + (i + 1) + "</i>" + highlight(c) + "</span>").join("");
+
+    let mem = "", scope = null;
+    p.vars.forEach(([name, type, sc]) => {
+      if (!st.alive.has(name)) return;
+      if (sc !== scope) { mem += (scope ? "</div>" : "") + '<div class="tr-scope">' + sc + '</div><div class="boxes" style="margin:4px 0 8px">'; scope = sc; }
+      const chg = step && step.set && name in step.set;
+      mem += '<div class="var' + (chg ? " changed" : "") + '"><div class="cell">' + st.vals[name] + '</div><div class="nm">' + name + '</div><div class="tp">' + type + "</div></div>";
+    });
+    el("trMem").innerHTML = (mem ? mem + "</div>" : '<div class="tr-scope">(empty: no variables yet)</div>');
+    el("trOut").textContent = st.out;
+    el("trNote").innerHTML = step ? step.note : "Press <b>Next ▶</b> to run the first line.";
+
+    let t = "<tr><th>Line</th>" + p.vars.map(v => "<th>" + v[0] + "</th>").join("") + "<th>Output</th></tr>";
+    st.rows.forEach((r, i) => {
+      t += '<tr' + (i === st.rows.length - 1 ? ' class="last"' : "") + "><td>" + r.line + "</td>" +
+        p.vars.map(v => '<td' + (r.changed.includes(v[0]) ? ' class="chg"' : "") + ">" + (v[0] in r.vals ? r.vals[v[0]] : "") + "</td>").join("") +
+        "<td>" + esc(r.out) + "</td></tr>";
+    });
+    el("trTable").innerHTML = t;
+
+    el("trBack").disabled = pos === 0;
+    el("trNext").disabled = pos === p.steps.length;
+    el("trCount").textContent = "Step " + pos + " of " + p.steps.length;
+    document.querySelectorAll("#trTabs button").forEach((b, i) => b.classList.toggle("on", i === prog));
+  }
+
+  PROGRAMS.forEach((p, i) => {
+    const b = document.createElement("button");
+    b.textContent = p.title;
+    b.addEventListener("click", () => { prog = i; pos = 0; renderTracer(); });
+    el("trTabs").appendChild(b);
+  });
+  el("trNext").addEventListener("click", () => { pos++; renderTracer(); });
+  el("trBack").addEventListener("click", () => { pos--; renderTracer(); });
+  el("trReset").addEventListener("click", () => { pos = 0; renderTracer(); });
+  renderTracer();
+
+  // ----- Checklist (saved in this browser only) -----
+  const boxes = [...document.querySelectorAll("#checks input")];
+  const KEY = "unit2-checklist";
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || "[]");
+    boxes.forEach((bx, i) => bx.checked = !!saved[i]);
+  } catch (e) {}
+  function updateBar() {
+    const done = boxes.filter(b => b.checked).length;
+    el("bar").style.width = (done / boxes.length * 100) + "%";
+    el("barLabel").textContent = done + " of " + boxes.length + " done";
+    try { localStorage.setItem(KEY, JSON.stringify(boxes.map(b => b.checked))); } catch (e) {}
+  }
+  boxes.forEach(b => b.addEventListener("change", updateBar));
+  updateBar();
+
+  // ----- Highlight current section in sidebar -----
+  const links = [...document.querySelectorAll("aside a[href^='#']")];
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + en.target.id));
+    });
+  }, { rootMargin: "-30% 0px -60% 0px" });
+  document.querySelectorAll("main section").forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
